@@ -1,0 +1,25 @@
+{
+  "name": "target365-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "target365-sdk.js",
+  "scripts": {
+    "test": "mocha --timeout=50000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.2.0",
+    "moment": "^2.22.2",
+    "joi": "^14.0.4",
+    "uuid": "^3.3.2",
+    "sha2": "^1.0.2",
+    "asn1.js": "^5.0.1",
+    "bn.js": "^4.11.8",
+    "ec-key": "^0.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "chai": "^4.2.0"
+  }
+}
