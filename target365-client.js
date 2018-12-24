@@ -539,10 +539,12 @@ function Client(ecPrivateKeyAsString, parameters) {
                 timeToLive: joi.number().integer().optional(),
                 priority: joi.string().optional().valid('Low', 'Normal', 'High'),
                 deliveryMode: joi.string().optional().valid('AtLeastOnce', 'AtMostOnce'),
-                merchantId: joi.string().optional(),
-                serviceCode: joi.string().optional(),
-                invoiceText: joi.string().optional(),
-                price: joi.number().optional(),
+                strex: joi.object().keys({
+                    merchantId: joi.string().required(),
+                    serviceCode: joi.string().required(),
+                    invoiceText: joi.string().required(),
+                    price: joi.number().required()
+                }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
@@ -605,10 +607,12 @@ function Client(ecPrivateKeyAsString, parameters) {
                 timeToLive: joi.number().integer().optional(),
                 priority: joi.string().optional().valid('Low', 'Normal', 'High'),
                 deliveryMode: joi.string().optional().valid('AtLeastOnce', 'AtMostOnce'),
-                merchantId: joi.string().optional(),
-                serviceCode: joi.string().optional(),
-                invoiceText: joi.string().optional(),
-                price: joi.number().optional(),
+                strex: joi.object().keys({
+                    merchantId: joi.string().required(),
+                    serviceCode: joi.string().required(),
+                    invoiceText: joi.string().required(),
+                    price: joi.number().required()
+                }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
@@ -693,10 +697,12 @@ function Client(ecPrivateKeyAsString, parameters) {
                 timeToLive: joi.number().integer().optional(),
                 priority: joi.string().optional().valid('Low', 'Normal', 'High'),
                 deliveryMode: joi.string().optional().valid('AtLeastOnce', 'AtMostOnce'),
-                merchantId: joi.string().optional(),
-                serviceCode: joi.string().optional(),
-                invoiceText: joi.string().optional(),
-                price: joi.number().optional(),
+                strex: joi.object().keys({
+                    merchantId: joi.string().required(),
+                    serviceCode: joi.string().required(),
+                    invoiceText: joi.string().required(),
+                    price: joi.number().required()
+                }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
@@ -819,7 +825,7 @@ function Client(ecPrivateKeyAsString, parameters) {
         return validate(object, schema, () => doPut('api/strex/merchants/' + encodeURIComponent(strexMerchantId.merchantId), JSON.stringify(strexMerchantId), {
             204: (response) => ''
         }));
-    }
+    };
 
     /**
      * Deletes a merchant id.

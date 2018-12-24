@@ -86,7 +86,7 @@ describe('', () => {
                     // Verify deleted keyword
                     .then(() => client.getKeyword(keyword.keywordId))
                     .then((deleted) => {
-                        expect(deleted).to.be.null;
+                        expect(deleted).to.equal(null);
                     });
             });
         });
@@ -242,6 +242,7 @@ describe('', () => {
                     .then((lookupResult) => {
                         expect(lookupResult.msisdn).to.equal("98079008");
                         expect(lookupResult.firstName).to.equal('Hans Olav');
+
                         expect(lookupResult.lastName).to.equal('Stjernholm');
                         expect(lookupResult.gender).to.equal('M');
                     });
@@ -417,11 +418,10 @@ describe('', () => {
                         recipient: 'Recipient',
                         content: 'Content',
                         priority: 'Invalid priority Value'
-                    }])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"priority" must be one of [Low, Normal, High]', '"outMessages" does not contain 1 required value(s)']);
-                        });
+                    }]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"priority" must be one of [Low, Normal, High]', '"outMessages" does not contain 1 required value(s)']);
+                    });
                 });
 
                 it('outMessages[0].deliveryMode should be one of AtLeastOnce, AtMostOnce', () => {
@@ -430,11 +430,10 @@ describe('', () => {
                         recipient: 'Recipient',
                         content: 'Content',
                         deliveryMode: 'Invalid DeliveryMode Value'
-                    }])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"deliveryMode" must be one of [AtLeastOnce, AtMostOnce]', '"outMessages" does not contain 1 required value(s)']);
-                        });
+                    }]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"deliveryMode" must be one of [AtLeastOnce, AtMostOnce]', '"outMessages" does not contain 1 required value(s)']);
+                    });
                 });
             });
 
@@ -463,20 +462,19 @@ describe('', () => {
                         });
                 });
 
-                it('outMessages.priority should be one of Low, Normal, High ', () => {
+                it('outMessage.priority should be one of Low, Normal, High ', () => {
                     return client.postOutMessage({
                         sender: 'Sender',
                         recipient: 'Recipient',
                         content: 'Content',
                         priority: 'Invalid priority Value'
-                    })
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"priority" must be one of [Low, Normal, High]']);
-                        });
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"priority" must be one of [Low, Normal, High]']);
+                    });
                 });
 
-                it('outMessages.deliveryMode should be one of AtLeastOnce, AtMostOnce', () => {
+                it('outMessage.deliveryMode should be one of AtLeastOnce, AtMostOnce', () => {
                     return client.postOutMessage({
                         sender: 'Sender',
                         recipient: 'Recipient',
@@ -487,6 +485,39 @@ describe('', () => {
                             expect(response.error).to.equal('InvalidInput');
                             expect(response.constraints).to.deep.equal(['"deliveryMode" must be one of [AtLeastOnce, AtMostOnce]']);
                         });
+                });
+
+                it('outMessage.strex.merchantId, outMessage.strex.serviceCode, outMessage.strex.invoiceText, outMessage.strex.price should be required', () => {
+                    return client.postOutMessage({
+                        sender: 'Sender',
+                        recipient: 'Recipient',
+                        content: 'Content',
+                        deliveryMode: 'AtLeastOnce',
+                        strex: {}
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"serviceCode" is required',
+                            '"invoiceText" is required', '"price" is required']);
+                    });
+                });
+
+                it('outMessage.strex.merchantId, outMessage.strex.serviceCode, outMessage.strex.invoiceText should not be blank', () => {
+                    return client.postOutMessage({
+                        sender: 'Sender',
+                        recipient: 'Recipient',
+                        content: 'Content',
+                        deliveryMode: 'AtLeastOnce',
+                        strex: {
+                            "merchantId": "",
+                            "serviceCode": "",
+                            "invoiceText": "",
+                            "price": 10
+                        }
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"serviceCode" is not allowed to be empty',
+                            '"invoiceText" is not allowed to be empty']);
+                    });
                 });
             });
 
@@ -549,6 +580,43 @@ describe('', () => {
                         .then((response) => {
                             expect(response.error).to.equal('InvalidInput');
                             expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                        });
+                });
+            });
+        });
+    });
+
+    describe('InMessage', () => {
+        describe('Integration', () => {
+            it('in-message should be read', () => {
+                // Read and verify in-message
+                client.getInMessage('NO-0000', '79f35793-6d70-423c-a7f7-ae9fb1024f3b')
+                    .then((inMessage) => {
+                        expect(inMessage.transactionId).to.equal('79f35793-6d70-423c-a7f7-ae9fb1024f3b');
+                        expect(inMessage.keywordId).to.equal('102');
+                        expect(inMessage.sender).to.equal('+4798079008');
+                        expect(inMessage.recipient).to.equal('0000');
+                        expect(inMessage.content).to.equal('Test');
+                        expect(inMessage.isStopMessage).to.equal(false);
+                    });
+            });
+        });
+
+        describe('Validation', () => {
+            describe('getInMessage()', () => {
+                it('shortNumberId, transactionId should be required', () => {
+                    return client.getInMessage()
+                        .then((response) => {
+                            expect(response.error).to.equal('InvalidInput');
+                            expect(response.constraints).to.deep.equal(['"shortNumberId" is required', '"transactionId" is required',]);
+                        });
+                });
+
+                it('shortNumberId, transactionId should not be blank', () => {
+                    return client.getInMessage('', '')
+                        .then((response) => {
+                            expect(response.error).to.equal('InvalidInput');
+                            expect(response.constraints).to.deep.equal(['"shortNumberId" is not allowed to be empty', '"transactionId" is not allowed to be empty']);
                         });
                 });
             });
