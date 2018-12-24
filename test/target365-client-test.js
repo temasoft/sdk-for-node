@@ -856,11 +856,97 @@ describe('', () => {
         });
     });
 
-    describe('[TODO] Verification', () => {
+    describe('PublicKey(s)', () => {
+        describe('Integration', () => {
+            it('server public key should be verified', () => {
+                // TODO This function was never tested, as in order to invoke it, need to know name of the server public key
+                // client.getServerPublicKey()
+            });
+
+            it('client public keys should be verified and deleted', () => {
+                // Verify client public keys
+                return client.getClientPublicKeys()
+                    .then((clientPublicKeys) => {
+                        let filteredClientPublicKeys = clientPublicKeys.filter(key => key.name.indexOf('JavaSdkTest') >= 0);
+                        expect(filteredClientPublicKeys).to.have.lengthOf(1);
+
+                        let clientPublicKey = filteredClientPublicKeys[0];
+                        expect(clientPublicKey.publicKeyString).to.equal('MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEH3kH4OdPQCeApKQOBNxQurzRmBGKIIYDPxcXs+UBpbcnV42Om6Rgr2QgStT0r2icb+7iuLUIvhXQYz4elBz6OQ==');
+                        expect(clientPublicKey.signAlgo).to.equal('ECDsaP256');
+                        expect(clientPublicKey.hashAlgo).to.equal('SHA256');
+                    });
+
+                // TODO This function was never tested, as if to delete client public key, there is not way to add it back easily
+                // client.deleteClientPublicKey()
+            });
+
+            it('client public key should be verified', () => {
+                // Verify client public key
+                return client.getClientPublicKey('JavaSdkTest')
+                    .then((clientPublicKey) => {
+                        expect(clientPublicKey.publicKeyString).to.equal('MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEH3kH4OdPQCeApKQOBNxQurzRmBGKIIYDPxcXs+UBpbcnV42Om6Rgr2QgStT0r2icb+7iuLUIvhXQYz4elBz6OQ==');
+                        expect(clientPublicKey.signAlgo).to.equal('ECDsaP256');
+                        expect(clientPublicKey.hashAlgo).to.equal('SHA256');
+                    });
+            });
+        });
+
+        describe('Validation', () => {
+            describe('getServerPublicKey()', () => {
+                it('keyName should be required', () => {
+                    return client.getServerPublicKey().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is required']);
+                    });
+                });
+
+                it('keyName should not be blank', () => {
+                    return client.getServerPublicKey('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('getClientPublicKey()', () => {
+                it('keyName should be required', () => {
+                    return client.getClientPublicKey().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is required']);
+                    });
+                });
+
+                it('keyName should not be blank', () => {
+                    return client.getClientPublicKey('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('deleteClientPublicKey()', () => {
+                it('keyName should be required', () => {
+                    return client.deleteClientPublicKey().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is required']);
+                    });
+                });
+
+                it('keyName should not be blank', () => {
+                    return client.deleteClientPublicKey('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyName" is not allowed to be empty']);
+                    });
+                });
+            });
+        });
+    });
+
+    describe('Verification', () => {
         describe('Integration', () => {
             it('signature is verified', () => {
-                // TODO Add test
-                // Need to have a message encrypted with a private key, which could be verified by a server public key
+                // TODO Need to have a message encrypted with a private key, which could be verified by a server public key
+                // client.verifySignature()
             });
         });
 
@@ -902,35 +988,4 @@ describe('', () => {
             });
         });
     });
-
-    describe('[TODO] Reverse', () => {
-        describe('Integration', () => {
-            it('payment is reversed', () => {
-                // TODO Add test
-                // Message reverse fail with message {"Message":"transaction id 'be1a1806-960a-45cc-98a2-fad6c8d7c2d8'hasn't been billed/processed and can't be reversed."}
-            });
-        });
-
-        describe('Validation', () => {
-            // TODO Method was removed or renamed, fix the test
-            // describe('reversePayment()', () => {
-            // 	it('transactionId should be required', () => {
-            // 		return client.reversePayment()
-            // 			.then((response) => {
-            // 				expect(response.error).to.equal('InvalidInput');
-            // 				expect(response.constraints).to.deep.equal(['"transactionId" is required']);
-            // 			});
-            // 	});
-            //
-            // 	it('transactionId should not be blank', () => {
-            // 		return client.reversePayment('')
-            // 			.then((response) => {
-            // 				expect(response.error).to.equal('InvalidInput');
-            // 				expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
-            // 			});
-            // 	});
-            // });
-        });
-    });
-})
-;
+});
