@@ -94,39 +94,38 @@ describe('', () => {
         describe('Validation', () => {
             describe('getKeywords()', () => {
                 it('mode should be one of Text, Wildcard, Regex', () => {
-                    return client.getKeywords({mode: 'Invalid Mode Value'})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]']);
-                        });
+                    return client.getKeywords({mode: 'Invalid Mode Value'}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]']);
+                    });
                 });
             });
 
             describe('postKeyword()', () => {
                 it('keyword should be required', () => {
-                    return client.postKeyword()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keyword" is required']);
-                        });
+                    return client.postKeyword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyword" is required']);
+                    });
                 });
 
                 it('keyword.shortNumberId, keyword.keywordText, keyword.mode, keyword.forwardUrl, keyword.enabled should be required', () => {
-                    return client.postKeyword({})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"shortNumberId" is required', '"keywordText" is required', '"mode" is required',
-                                '"forwardUrl" is required', '"enabled" is required']);
-                        });
+                    return client.postKeyword({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"shortNumberId" is required', '"keywordText" is required', '"mode" is required', '"forwardUrl" is required', '"enabled" is required']);
+                    });
                 });
 
                 it('keyword.shortNumberId, keyword.keywordText, keyword.forwardUrl should not be blank', () => {
-                    return client.postKeyword({shortNumberId: '', keywordText: '', mode: 'Text', forwardUrl: ''})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"shortNumberId" is not allowed to be empty', '"keywordText" is not allowed to be empty',
-                                '"forwardUrl" is not allowed to be empty', '"enabled" is required']);
-                        });
+                    return client.postKeyword({
+                        shortNumberId: '',
+                        keywordText: '',
+                        mode: 'Text',
+                        forwardUrl: ''
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"shortNumberId" is not allowed to be empty', '"keywordText" is not allowed to be empty', '"forwardUrl" is not allowed to be empty', '"enabled" is required']);
+                    });
                 });
 
                 it('keyword.mode should be one of Text, Wildcard, Regex', () => {
@@ -136,48 +135,42 @@ describe('', () => {
                         mode: 'Invalid Mode Value',
                         forwardUrl: 'ForwardUrl',
                         enabled: true
-                    })
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]']);
-                        });
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]']);
+                    });
                 });
             });
 
             describe('getKeyword()', () => {
                 it('keywordId should be required', () => {
-                    return client.getKeyword()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is required']);
-                        });
+                    return client.getKeyword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is required']);
+                    });
                 });
 
                 it('keywordId should not be blank', () => {
-                    return client.getKeyword('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty']);
-                        });
+                    return client.getKeyword('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty']);
+                    });
                 });
             });
 
             describe('putKeyword()', () => {
                 it('keyword should be required', () => {
-                    return client.putKeyword()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keyword" is required']);
-                        });
+                    return client.putKeyword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keyword" is required']);
+                    });
                 });
 
                 it('keyword.keywordId, keyword.shortNumberId, keyword.keywordText, keyword.mode, keyword.forwardUrl, keyword.enabled should be required', () => {
-                    return client.putKeyword({})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is required', '"shortNumberId" is required', '"keywordText" is required',
-                                '"mode" is required', '"forwardUrl" is required', '"enabled" is required']);
-                        });
+                    return client.putKeyword({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is required', '"shortNumberId" is required', '"keywordText" is required', '"mode" is required', '"forwardUrl" is required', '"enabled" is required']);
+                    });
                 });
 
                 it('keyword.keywordId, keyword.shortNumberId, keyword.keywordText, keyword.forwardUrl should not be blank', () => {
@@ -188,12 +181,10 @@ describe('', () => {
                         mode: 'Regex',
                         forwardUrl: '',
                         enabled: true
-                    })
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty', '"shortNumberId" is not allowed to be empty',
-                                '"keywordText" is not allowed to be empty', '"forwardUrl" is not allowed to be empty']);
-                        });
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty', '"shortNumberId" is not allowed to be empty', '"keywordText" is not allowed to be empty', '"forwardUrl" is not allowed to be empty']);
+                    });
                 });
 
                 it('keyword.mode should be one of Text, Wildcard, Regex', () => {
@@ -203,29 +194,26 @@ describe('', () => {
                         keywordText: 'KeywordText',
                         mode: 'Invalid Mode Value',
                         forwardUrl: 'ForwardUrl'
-                    })
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]', '"enabled" is required']);
-                        });
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]', '"enabled" is required']);
+                    });
                 });
             });
 
             describe('deleteKeyword()', () => {
                 it('keywordId should be required', () => {
-                    return client.deleteKeyword()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is required']);
-                        });
+                    return client.deleteKeyword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is required']);
+                    });
                 });
 
                 it('keywordId should not be blank', () => {
-                    return client.deleteKeyword('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty']);
-                        });
+                    return client.deleteKeyword('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"keywordId" is not allowed to be empty']);
+                    });
                 });
             });
         });
@@ -236,35 +224,31 @@ describe('', () => {
             it('address should be looked up', () => {
                 let msisdn = '+4798079008';
 
-                // Lookup address
-                return client.addressLookup(msisdn)
-                // Verify lookup result
-                    .then((lookupResult) => {
-                        expect(lookupResult.msisdn).to.equal("98079008");
-                        expect(lookupResult.firstName).to.equal('Hans Olav');
+                // Lookup and verify address
+                return client.addressLookup(msisdn).then((lookupResult) => {
+                    expect(lookupResult.msisdn).to.equal("98079008");
+                    expect(lookupResult.firstName).to.equal('Hans Olav');
 
-                        expect(lookupResult.lastName).to.equal('Stjernholm');
-                        expect(lookupResult.gender).to.equal('M');
-                    });
+                    expect(lookupResult.lastName).to.equal('Stjernholm');
+                    expect(lookupResult.gender).to.equal('M');
+                });
             });
         });
 
         describe('Validation', () => {
             describe('addressLookup()', () => {
                 it('msisdn should be required', () => {
-                    return client.addressLookup()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"msisdn" is required']);
-                        });
+                    return client.addressLookup().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"msisdn" is required']);
+                    });
                 });
 
                 it('msisdn should not be blank', () => {
-                    return client.addressLookup('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"msisdn" is not allowed to be empty']);
-                        });
+                    return client.addressLookup('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"msisdn" is not allowed to be empty']);
+                    });
                 });
             });
         });
@@ -338,14 +322,14 @@ describe('', () => {
                     // Verify deleted out-message batch
                     .then(() => client.getOutMessage(outMessageForBatch.transactionId))
                     .then((deletedBatch) => {
-                        expect(deletedBatch).to.be.null;
+                        expect(deletedBatch).to.equal(null);
                     })
                     // Delete out-message batch
                     .then(() => client.deleteOutMessage(outMessage.transactionId))
                     // Verify deleted out-message batch
                     .then(() => client.getOutMessage(outMessage.transactionId))
                     .then((deleted) => {
-                        expect(deleted).to.be.null;
+                        expect(deleted).to.equal(null);
                     });
             });
         });
@@ -353,63 +337,54 @@ describe('', () => {
         describe('Validation', () => {
             describe('prepareMsisdns()', () => {
                 it('msisdns should be required', () => {
-                    return client.prepareMsisdns()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"msisdns" is required']);
-                        });
+                    return client.prepareMsisdns().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"msisdns" is required']);
+                    });
                 });
 
                 it('msisdns should contain at least 1 item', () => {
-                    return client.prepareMsisdns([])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"msisdns" does not contain 1 required value(s)']);
-                        });
+                    return client.prepareMsisdns([]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"msisdns" does not contain 1 required value(s)']);
+                    });
                 });
 
                 it('msisdns item should not be blank', () => {
-                    return client.prepareMsisdns([''])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"0" is not allowed to be empty', '"msisdns" does not contain 1 required value(s)']);
-                        });
+                    return client.prepareMsisdns(['']).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"0" is not allowed to be empty', '"msisdns" does not contain 1 required value(s)']);
+                    });
                 });
             });
 
             describe('postOutMessageBatch()', () => {
                 it('outMessages should be required', () => {
-                    return client.postOutMessageBatch()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"outMessages" is required']);
-                        });
+                    return client.postOutMessageBatch().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"outMessages" is required']);
+                    });
                 });
 
                 it('outMessages should contain at least 1 item', () => {
-                    return client.postOutMessageBatch([])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"outMessages" does not contain 1 required value(s)']);
-                        });
+                    return client.postOutMessageBatch([]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"outMessages" does not contain 1 required value(s)']);
+                    });
                 });
 
                 it('outMessages[0].sender, outMessages[0].recipient, outMessages[0].content should be required', () => {
-                    return client.postOutMessageBatch([{}])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"sender" is required', '"recipient" is required', '"content" is required',
-                                '"outMessages" does not contain 1 required value(s)']);
-                        });
+                    return client.postOutMessageBatch([{}]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"sender" is required', '"recipient" is required', '"content" is required', '"outMessages" does not contain 1 required value(s)']);
+                    });
                 });
 
                 it('outMessages[0].sender, outMessages[0].recipient, outMessages[0].content should not be blank', () => {
-                    return client.postOutMessageBatch([{sender: '', recipient: '', content: ''}])
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty',
-                                '"outMessages" does not contain 1 required value(s)']);
-                        });
+                    return client.postOutMessageBatch([{sender: '', recipient: '', content: ''}]).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty', '"outMessages" does not contain 1 required value(s)']);
+                    });
                 });
 
                 it('outMessages[0].priority should be one of Low, Normal, High', () => {
@@ -439,27 +414,24 @@ describe('', () => {
 
             describe('postOutMessage()', () => {
                 it('outMessage should be required', () => {
-                    return client.postOutMessage()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"outMessage" is required']);
-                        });
+                    return client.postOutMessage().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"outMessage" is required']);
+                    });
                 });
 
                 it('outMessage.sender, outMessage.recipient, outMessage.content should be required', () => {
-                    return client.postOutMessage({})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"sender" is required', '"recipient" is required', '"content" is required']);
-                        });
+                    return client.postOutMessage({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"sender" is required', '"recipient" is required', '"content" is required']);
+                    });
                 });
 
                 it('outMessage.sender, outMessage.recipient, outMessage.content should not be blank', () => {
-                    return client.postOutMessage({sender: '', recipient: '', content: ''})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty']);
-                        });
+                    return client.postOutMessage({sender: '', recipient: '', content: ''}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty']);
+                    });
                 });
 
                 it('outMessage.priority should be one of Low, Normal, High ', () => {
@@ -480,11 +452,10 @@ describe('', () => {
                         recipient: 'Recipient',
                         content: 'Content',
                         deliveryMode: 'Invalid DeliveryMode Value'
-                    })
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"deliveryMode" must be one of [AtLeastOnce, AtMostOnce]']);
-                        });
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"deliveryMode" must be one of [AtLeastOnce, AtMostOnce]']);
+                    });
                 });
 
                 it('outMessage.strex.merchantId, outMessage.strex.serviceCode, outMessage.strex.invoiceText, outMessage.strex.price should be required', () => {
@@ -496,8 +467,7 @@ describe('', () => {
                         strex: {}
                     }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"serviceCode" is required',
-                            '"invoiceText" is required', '"price" is required']);
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"serviceCode" is required', '"invoiceText" is required', '"price" is required']);
                     });
                 });
 
@@ -515,72 +485,68 @@ describe('', () => {
                         }
                     }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"serviceCode" is not allowed to be empty',
-                            '"invoiceText" is not allowed to be empty']);
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
                     });
                 });
             });
 
             describe('getOutMessage()', () => {
                 it('transactionId should be required', () => {
-                    return client.getOutMessage()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is required']);
-                        });
+                    return client.getOutMessage().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required']);
+                    });
                 });
 
                 it('transactionId should not be blank', () => {
-                    return client.getOutMessage('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
-                        });
+                    return client.getOutMessage('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                    });
                 });
             });
 
             describe('putOutMessage()', () => {
                 it('outMessage should be required', () => {
-                    return client.putOutMessage()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"outMessage" is required']);
-                        });
+                    return client.putOutMessage().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"outMessage" is required']);
+                    });
                 });
 
                 it('outMessage.transactionId, outMessage.sender, outMessage.recipient, outMessage.content should be required', () => {
-                    return client.putOutMessage({})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is required', '"sender" is required', '"recipient" is required', '"content" is required']);
-                        });
+                    return client.putOutMessage({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"sender" is required', '"recipient" is required', '"content" is required']);
+                    });
                 });
 
                 it('outMessage.transactionId, outMessage.sender, outMessage.recipient, outMessage.content should not be blank', () => {
-                    return client.putOutMessage({transactionId: '', sender: '', recipient: '', content: ''})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"sender" is not allowed to be empty', '"recipient" is not allowed to be empty',
-                                '"content" is not allowed to be empty']);
-                        });
+                    return client.putOutMessage({
+                        transactionId: '',
+                        sender: '',
+                        recipient: '',
+                        content: ''
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty']);
+                    });
                 });
             });
 
             describe('deleteOutMessage()', () => {
                 it('transactionId should be required', () => {
-                    return client.deleteOutMessage()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is required']);
-                        });
+                    return client.deleteOutMessage().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required']);
+                    });
                 });
 
                 it('transactionId should not be blank', () => {
-                    return client.deleteOutMessage('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
-                        });
+                    return client.deleteOutMessage('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                    });
                 });
             });
         });
@@ -590,34 +556,31 @@ describe('', () => {
         describe('Integration', () => {
             it('in-message should be read', () => {
                 // Read and verify in-message
-                client.getInMessage('NO-0000', '79f35793-6d70-423c-a7f7-ae9fb1024f3b')
-                    .then((inMessage) => {
-                        expect(inMessage.transactionId).to.equal('79f35793-6d70-423c-a7f7-ae9fb1024f3b');
-                        expect(inMessage.keywordId).to.equal('102');
-                        expect(inMessage.sender).to.equal('+4798079008');
-                        expect(inMessage.recipient).to.equal('0000');
-                        expect(inMessage.content).to.equal('Test');
-                        expect(inMessage.isStopMessage).to.equal(false);
-                    });
+                client.getInMessage('NO-0000', '79f35793-6d70-423c-a7f7-ae9fb1024f3b').then((inMessage) => {
+                    expect(inMessage.transactionId).to.equal('79f35793-6d70-423c-a7f7-ae9fb1024f3b');
+                    expect(inMessage.keywordId).to.equal('102');
+                    expect(inMessage.sender).to.equal('+4798079008');
+                    expect(inMessage.recipient).to.equal('0000');
+                    expect(inMessage.content).to.equal('Test');
+                    expect(inMessage.isStopMessage).to.equal(false);
+                });
             });
         });
 
         describe('Validation', () => {
             describe('getInMessage()', () => {
                 it('shortNumberId, transactionId should be required', () => {
-                    return client.getInMessage()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"shortNumberId" is required', '"transactionId" is required',]);
-                        });
+                    return client.getInMessage().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"shortNumberId" is required', '"transactionId" is required',]);
+                    });
                 });
 
                 it('shortNumberId, transactionId should not be blank', () => {
-                    return client.getInMessage('', '')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"shortNumberId" is not allowed to be empty', '"transactionId" is not allowed to be empty']);
-                        });
+                    return client.getInMessage('', '').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"shortNumberId" is not allowed to be empty', '"transactionId" is not allowed to be empty']);
+                    });
                 });
             });
         });
@@ -644,7 +607,7 @@ describe('', () => {
                     .then((created) => {
                         expect(created.merchantId).to.equal(strexMerchantId.merchantId);
                         expect(created.shortNumberId).to.equal(strexMerchantId.shortNumberId);
-                        expect(created.password).to.be.null;
+                        expect(created.password).to.equal(null);
                     })
                     // Update strex merchant id
                     .then(() => client.putMerchantId({
@@ -657,78 +620,237 @@ describe('', () => {
                     .then((updated) => {
                         expect(updated.merchantId).to.equal(strexMerchantId.merchantId);
                         expect(updated.shortNumberId).to.equal(strexMerchantId.shortNumberId);
-                        expect(updated.password).to.be.null;
+                        expect(updated.password).to.equal(null);
                     })
                     // Delete strex merchant id
                     .then(() => client.deleteMerchantId(strexMerchantId.merchantId))
                     // Verify deleted strex merchant id
                     .then(() => client.getMerchantId(strexMerchantId.merchantId))
                     .then((deleted) => {
-                        expect(deleted).to.be.null;
+                        expect(deleted).to.be.equal(null);
                     });
+            });
+
+            it('strex one time password should be created and verified', () => {
+                let strexOneTimePassword = {
+                    transactionId: uuidv4(),
+                    merchantId: '10000002',
+                    recipient: '+4798079008',
+                    recurring: false
+                };
+
+                // Create strex one time password
+                return client.postStrexOneTimePassword(strexOneTimePassword)
+                    .then(() => client.getStrexOneTimePassword(strexOneTimePassword.transactionId))
+                    // Verify created strex one time password
+                    .then((created) => {
+                        expect(created.transactionId).to.equal(strexOneTimePassword.transactionId);
+                        expect(created.merchantId).to.equal(strexOneTimePassword.merchantId);
+                        expect(created.recipient).to.equal(strexOneTimePassword.recipient);
+                        expect(created.recurring).to.equal(strexOneTimePassword.recurring);
+                    });
+            });
+
+            it('strex transaction should be created, verified and reversed', () => {
+                let strexTransaction = {
+                    transactionId: uuidv4(),
+                    merchantId: '10000001',
+                    shortNumber: 'NO-0000',
+                    recipient: '+4798079008',
+                    price: 1000,
+                    serviceCode: '10001',
+                    invoiceText: 'Test Invoice Text'
+                };
+
+                // Create strex transaction
+                return client.postStrexTransaction(strexTransaction)
+                    .then(() => client.getStrexTransaction(strexTransaction.transactionId))
+                    // Verify created strex transaction
+                    .then((created) => {
+                        expect(created.transactionId).to.equal(strexTransaction.transactionId);
+                        expect(created.merchantId).to.equal(strexTransaction.merchantId);
+                        expect(created.shortNumber).to.equal(strexTransaction.shortNumber);
+                        expect(created.recipient).to.equal(strexTransaction.recipient);
+                        expect(created.price).to.equal(strexTransaction.price);
+                        expect(created.serviceCode).to.equal(strexTransaction.serviceCode);
+                        expect(created.invoiceText).to.equal(strexTransaction.invoiceText);
+                    })
+                    // Reverse strex transaction
+                    .then(() => client.reverseStrexTransaction(strexTransaction.transactionId))
+                    .then(() => client.getStrexTransaction('-' + strexTransaction.transactionId))
+                    // Verified reversed strex transaction
+                    .then((reversed) => {
+                        expect(reversed.transactionId).to.equal('-' + strexTransaction.transactionId);
+                        expect(reversed.merchantId).to.equal(strexTransaction.merchantId);
+                        expect(reversed.shortNumber).to.equal(strexTransaction.shortNumber);
+                        expect(reversed.recipient).to.equal(strexTransaction.recipient);
+                        expect(reversed.price).to.equal(-1 * strexTransaction.price);
+                        expect(reversed.serviceCode).to.equal(strexTransaction.serviceCode);
+                        expect(reversed.invoiceText).to.equal(strexTransaction.invoiceText);
+                    })
             });
         });
 
         describe('Validation', () => {
             describe('getMerchantId()', () => {
                 it('merchantId should be required', () => {
-                    return client.getMerchantId()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is required']);
-                        });
+                    return client.getMerchantId().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required']);
+                    });
                 });
 
                 it('merchantId should not be blank', () => {
-                    return client.getMerchantId('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
-                        });
+                    return client.getMerchantId('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
+                    });
                 });
             });
 
             describe('putMerchantId()', () => {
                 it('strexMerchantId should be required', () => {
-                    return client.putMerchantId()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"strexMerchantId" is required']);
-                        });
+                    return client.putMerchantId().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"strexMerchantId" is required']);
+                    });
                 });
 
                 it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should be required', () => {
-                    return client.putMerchantId({})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is required', '"shortNumberId" is required']);
-                        });
+                    return client.putMerchantId({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"shortNumberId" is required']);
+                    });
                 });
 
                 it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should not be blank', () => {
-                    return client.putMerchantId({merchantId: '', shortNumberId: ''})
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"shortNumberId" is not allowed to be empty']);
-                        });
+                    return client.putMerchantId({merchantId: '', shortNumberId: ''}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"shortNumberId" is not allowed to be empty']);
+                    });
                 });
             });
 
             describe('deleteMerchantId()', () => {
                 it('merchantId should be required', () => {
-                    return client.deleteMerchantId()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is required']);
-                        });
+                    return client.deleteMerchantId().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required']);
+                    });
                 });
 
                 it('merchantId should not be blank', () => {
-                    return client.deleteMerchantId('')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
-                        });
+                    return client.deleteMerchantId('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('postStrexOneTimePassword()', () => {
+                it('oneTimePassword should be required', () => {
+                    return client.postStrexOneTimePassword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"oneTimePassword" is required']);
+                    });
+                });
+
+                it('oneTimePassword.transactionId, oneTimePassword.merchantId, oneTimePassword.recipient, oneTimePassword.recurring should be required', () => {
+                    return client.postStrexOneTimePassword({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"recipient" is required', '"recurring" is required']);
+                    });
+                });
+
+                it('oneTimePassword.transactionId, oneTimePassword.merchantId, oneTimePassword.recipient should not be blank', () => {
+                    return client.postStrexOneTimePassword({
+                        transactionId: '',
+                        merchantId: '',
+                        recipient: '',
+                        recurring: false
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"recipient" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('getStrexOneTimePassword()', () => {
+                it('transactionId should be required', () => {
+                    return client.getStrexOneTimePassword().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required']);
+                    });
+                });
+
+                it('transactionId should not be blank', () => {
+                    return client.getStrexOneTimePassword('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('postStrexTransaction()', () => {
+                it('transaction should be required', () => {
+                    return client.postStrexTransaction().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transaction" is required']);
+                    });
+                });
+
+                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.recipient, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
+                    return client.postStrexTransaction({}).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"recipient" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
+                    });
+                });
+
+                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.recipient, transaction.serviceCode, transaction.invoiceText should not be blank', () => {
+                    return client.postStrexTransaction({
+                        transactionId: '',
+                        merchantId: '',
+                        shortNumber: '',
+                        recipient: '',
+                        price: 10,
+                        serviceCode: '',
+                        invoiceText: ''
+                    }).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('getStrexTransaction()', () => {
+                it('transactionId should be required', () => {
+                    return client.getStrexTransaction().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required']);
+                    });
+                });
+
+                it('transactionId should not be blank', () => {
+                    return client.getStrexTransaction('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                    });
+                });
+            });
+
+            describe('reverseStrexTransaction()', () => {
+                it('transactionId should be required', () => {
+                    return client.reverseStrexTransaction().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required']);
+                    });
+                });
+
+                it('transactionId should not be blank', () => {
+                    return client.reverseStrexTransaction('').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty']);
+                    });
                 });
             });
         });
@@ -745,28 +867,25 @@ describe('', () => {
         describe('Validation', () => {
             describe('verifySignature()', () => {
                 it('method, uri, xEcdsaSignatureString should be required', () => {
-                    return client.verifySignature()
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"method" is required', '"uri" is required', '"xEcdsaSignatureString" is required']);
-                        });
+                    return client.verifySignature().then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"method" is required', '"uri" is required', '"xEcdsaSignatureString" is required']);
+                    });
                 });
 
                 it('method, uri, xEcdsaSignatureString should not be blank', () => {
-                    return client.verifySignature('', '', '', '')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"method" is not allowed to be empty', '"uri" is not allowed to be empty', '"xEcdsaSignatureString" is not allowed to be empty',
-                                '"xEcdsaSignatureString" with value "" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
-                        });
+                    return client.verifySignature('', '', '', '').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"method" is not allowed to be empty', '"uri" is not allowed to be empty', '"xEcdsaSignatureString" is not allowed to be empty',
+                            '"xEcdsaSignatureString" with value "" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
+                    });
                 });
 
                 it('xEcdsaSignatureString should match the pattern', () => {
-                    return client.verifySignature('GET', 'uri', '', ':::')
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"xEcdsaSignatureString" with value ":::" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
-                        });
+                    return client.verifySignature('GET', 'uri', '', ':::').then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"xEcdsaSignatureString" with value ":::" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
+                    });
                 });
 
                 it('timestamp clock-drift should be less than 5 minutes', () => {
@@ -775,11 +894,10 @@ describe('', () => {
                     const parts = sign.replace('HMAC ', '').split(':');
                     const clockDriftedSign = parts[0] + ':' + moment().subtract(1, 'days').unix() + ':' + parts[2] + ':' + parts[3];
 
-                    return client.verifySignature('GET', 'uri', '', clockDriftedSign)
-                        .then((response) => {
-                            expect(response.error).to.equal('InvalidInput');
-                            expect(response.constraints).to.deep.equal(['"timestamp" must be greater than ' + moment().subtract(5, 'minutes').unix()]);
-                        });
+                    return client.verifySignature('GET', 'uri', '', clockDriftedSign).then((response) => {
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"timestamp" must be greater than ' + moment().subtract(5, 'minutes').unix()]);
+                    });
                 });
             });
         });
@@ -814,4 +932,5 @@ describe('', () => {
             // });
         });
     });
-});
+})
+;

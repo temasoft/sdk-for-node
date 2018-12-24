@@ -937,12 +937,12 @@ function Client(ecPrivateKeyAsString, parameters) {
         };
 
         const schema = joi.object().keys({
-            outMessage: joi.object().keys({
+            transaction: joi.object().keys({
                 transactionId: joi.string().required(),
                 merchantId: joi.string().required(),
                 shortNumber: joi.string().required(),
                 recipient: joi.string().required(),
-                price: joi.number().decimal().required(),
+                price: joi.number().required(),
                 serviceCode: joi.string().required(),
                 invoiceText: joi.string().required(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
