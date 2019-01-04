@@ -15,7 +15,7 @@ npm i target365-sdk
 [![npm version](https://badge.fury.io/js/target365-sdk.svg)](https://www.npmjs.com/package/target365-sdk)
 
 ### Authors and maintainers
-Target365 <support@target365.no>
+Target365 (<support@target365.no>)
 
 ### Issues / Bugs / Questions
 
