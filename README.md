@@ -12,6 +12,8 @@ If you want, you can generate your EC public/private key-pair here: <https://cry
 npm i target365-sdk
 ```
 
+[![npm version](https://badge.fury.io/js/target365-sdk.svg)](https://badge.fury.io/js/target365-sdk)
+
 ### Authors and maintainers
 Hans Olav <https://github.com/HansOlavS>
 
