@@ -512,6 +512,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
      *   deliveryReportUrl, // Delivery report url.
+     *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
      *   lastModified, // Last modified time.
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
@@ -546,6 +547,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                     price: joi.number().required()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
+                allowUnicode: joi.boolean().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
@@ -580,6 +582,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
      *   deliveryReportUrl, // Delivery report url.
+     *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
      *   lastModified, // Last modified time.
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
@@ -614,6 +617,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                     price: joi.number().required()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
+                allowUnicode: joi.boolean().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
