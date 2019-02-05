@@ -9,7 +9,7 @@ If you want, you can generate your EC public/private key-pair here: <https://cry
 ### NPM
 
 ```Xml
-npm i target365-sdk
+npm install target365-sdk
 ```
 
 [![npm version](https://badge.fury.io/js/target365-sdk.svg)](https://www.npmjs.com/package/target365-sdk)
