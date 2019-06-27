@@ -1,6 +1,5 @@
 const fs = require('fs');
 const expect = require('chai').expect;
-const assert = require('assert');
 const uuidv4 = require('uuid/v4');
 const moment = require('moment');
 
@@ -47,7 +46,7 @@ describe('', () => {
                 };
 
                 // Delete keyword if it exists (data cleanup)
-                return client.getKeywords({keywordText: keyword.keywordText})
+                return client.getKeywords({ keywordText: keyword.keywordText })
                     .then((keywords) => Promise.all(keywords.map(k => client.deleteKeyword(k.keywordId))))
                     // Create keyword
                     .then(() => client.postKeyword(keyword))
@@ -94,7 +93,7 @@ describe('', () => {
         describe('Validation', () => {
             describe('getKeywords()', () => {
                 it('mode should be one of Text, Wildcard, Regex', () => {
-                    return client.getKeywords({mode: 'Invalid Mode Value'}).then((response) => {
+                    return client.getKeywords({ mode: 'Invalid Mode Value' }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"mode" must be one of [Text, Wildcard, Regex]']);
                     });
@@ -226,7 +225,7 @@ describe('', () => {
 
                 // Lookup and verify address
                 return client.addressLookup(msisdn).then((lookupResult) => {
-                    expect(lookupResult.msisdn).to.equal("98079008");
+                    expect(lookupResult.msisdn).to.equal("+4798079008");
                     expect(lookupResult.firstName).to.equal('Hans Olav');
 
                     expect(lookupResult.lastName).to.equal('Stjernholm');
@@ -260,7 +259,7 @@ describe('', () => {
                 let msisdn = '+4798079008';
 
                 let outMessageForBatch = {
-                    sender: 'OutMessageBatch Sender',
+                    sender: 'BatchSender',
                     recipient: '+4798079008',
                     content: 'OutMessageBatch 0001',
                     sendTime: moment().add(1, 'days').format(),
@@ -268,7 +267,7 @@ describe('', () => {
                 };
 
                 let outMessage = {
-                    sender: 'OutMessage Sender',
+                    sender: 'MsgSender',
                     recipient: '+4798079008',
                     content: 'OutMessage 0001',
                     sendTime: moment().add(1, 'days').format()
@@ -276,7 +275,7 @@ describe('', () => {
 
                 // Prepare msisdns
                 return client.prepareMsisdns([msisdn])
-                // Create out-message batch
+                    // Create out-message batch
                     .then(() => client.postOutMessageBatch([outMessageForBatch]))
                     .then((transactionIdsBatch) => transactionIdsBatch[0])
                     // Read out-message batch
@@ -381,7 +380,7 @@ describe('', () => {
                 });
 
                 it('outMessages[0].sender, outMessages[0].recipient, outMessages[0].content should not be blank', () => {
-                    return client.postOutMessageBatch([{sender: '', recipient: '', content: ''}]).then((response) => {
+                    return client.postOutMessageBatch([{ sender: '', recipient: '', content: '' }]).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty', '"outMessages" does not contain 1 required value(s)']);
                     });
@@ -428,7 +427,7 @@ describe('', () => {
                 });
 
                 it('outMessage.sender, outMessage.recipient, outMessage.content should not be blank', () => {
-                    return client.postOutMessage({sender: '', recipient: '', content: ''}).then((response) => {
+                    return client.postOutMessage({ sender: '', recipient: '', content: '' }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"sender" is not allowed to be empty', '"recipient" is not allowed to be empty', '"content" is not allowed to be empty']);
                     });
@@ -591,7 +590,7 @@ describe('', () => {
             it('strex merchant should be created, updated and deleted', () => {
                 let strexMerchantId = {
                     merchantId: '10000001',
-                    shortNumberId: 'NO-0000',
+                    shortNumberIds: ['NO-0000'],
                     password: 'test'
                 };
 
@@ -606,7 +605,7 @@ describe('', () => {
                     // Verify created strex merchant id
                     .then((created) => {
                         expect(created.merchantId).to.equal(strexMerchantId.merchantId);
-                        expect(created.shortNumberId).to.equal(strexMerchantId.shortNumberId);
+                        expect(created.shortNumberIds).to.eql(strexMerchantId.shortNumberIds);
                         expect(created.password).to.equal(null);
                     })
                     // Update strex merchant id
@@ -619,7 +618,7 @@ describe('', () => {
                     // Verify updated strex merchant id
                     .then((updated) => {
                         expect(updated.merchantId).to.equal(strexMerchantId.merchantId);
-                        expect(updated.shortNumberId).to.equal(strexMerchantId.shortNumberId);
+                        expect(updated.shortNumberIds).to.eql(strexMerchantId.shortNumberIds);
                         expect(updated.password).to.equal(null);
                     })
                     // Delete strex merchant id
@@ -655,7 +654,7 @@ describe('', () => {
                 let strexTransaction = {
                     transactionId: uuidv4(),
                     merchantId: '10000001',
-                    shortNumber: 'NO-0000',
+                    shortNumber: '0000',
                     recipient: '+4798079008',
                     price: 1000,
                     serviceCode: '10001',
@@ -719,14 +718,14 @@ describe('', () => {
                 it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should be required', () => {
                     return client.putMerchantId({}).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"shortNumberId" is required']);
+                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"shortNumberIds" is required']);
                     });
                 });
 
                 it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should not be blank', () => {
-                    return client.putMerchantId({merchantId: '', shortNumberId: ''}).then((response) => {
+                    return client.putMerchantId({ merchantId: '', shortNumberIds: '[]' }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty', '"shortNumberId" is not allowed to be empty']);
+                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
                     });
                 });
             });
