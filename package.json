@@ -9,14 +9,14 @@
 	"author": "Target365",
 	"license": "MIT",
 	"dependencies": {
-		"node-fetch": "^2.2.0",
-		"moment": "^2.22.2",
-		"joi": "^14.0.4",
-		"uuid": "^3.3.2",
-		"sha2": "^1.0.2",
+		"@hapi/joi": "^15.1.0",
 		"asn1.js": "^5.0.1",
 		"bn.js": "^4.11.8",
-		"ec-key": "^0.0.2"
+		"ec-key": "^0.0.2",
+		"moment": "^2.22.2",
+		"node-fetch": "^2.2.0",
+		"sha2": "^1.0.2",
+		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
 		"mocha": "^5.2.0",

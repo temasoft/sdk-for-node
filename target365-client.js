@@ -1,8 +1,7 @@
 const uuidv4 = require('uuid/v4');
 const fetch = require('node-fetch');
 const moment = require('moment');
-const joi = require('joi');
-
+const joi = require('@hapi/joi');
 const asn = require('asn1.js');
 const sha2 = require('sha2');
 const BN = require('bn.js');
