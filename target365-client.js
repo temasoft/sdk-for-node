@@ -517,6 +517,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   delivered, // Whether message was delivered. Null if status is unknown.
      *   billed, // Whether billing was performed. Null if status is unknown.
+     *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
      * }
      *
@@ -552,6 +553,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 delivered: joi.boolean().optional(),
                 billed: joi.boolean().optional(),
+                properties: joi.object().optional(),
                 tags: joi.array().optional()
             }).required()).required()
         });
@@ -587,6 +589,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   delivered, // Whether message was delivered. Null if status is unknown.
      *   billed, // Whether billing was performed. Null if status is unknown.
+     *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
      * }
      *
@@ -622,6 +625,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 delivered: joi.boolean().optional(),
                 billed: joi.boolean().optional(),
+                properties: joi.object().optional(),
                 tags: joi.array().optional()
             }).required()
         });
@@ -678,6 +682,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   delivered, // Whether message was delivered. Null if status is unknown.
      *   billed, // Whether billing was performed. Null if status is unknown.
+     *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
      * }
      *
@@ -712,6 +717,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 delivered: joi.boolean().optional(),
                 billed: joi.boolean().optional(),
+                properties: joi.object().optional(),
                 tags: joi.array().optional()
             }).required()
         });
@@ -927,6 +933,8 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
      *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
      *   oneTimePassword, // One-Time-Password. Used with previously sent one-time-passwords.
+     *   properties, // Custom properties associated with transaction.
+     *   tags // Tags associated with transaction. Can be used for statistics and grouping.
      *   billed, // Read-only: Whether billing has been performed. Null means unknown status.
      *   created, // Created time. Read-only property.
      *   lastModified, // Last modified time. Read-only property.
@@ -952,6 +960,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                 sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
                 oneTimePassword: joi.string().optional(),
+                properties: joi.object().optional(),
+                tags: joi.array().optional(),
                 billed: joi.boolean().optional(),
                 created: joi.string().optional(),
                 lastModified: joi.string().optional()
