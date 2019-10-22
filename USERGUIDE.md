@@ -96,7 +96,8 @@ let transaction = {
     recipient: '+4798079008',
     price: 1,
     serviceCode: '10001',
-    invoiceText: 'Donation test'
+    invoiceText: 'Donation test',
+    smsConfirmation: true
 };
 
 serviceClient.postStrexTransaction(transaction);
