@@ -922,22 +922,24 @@ function Client(ecPrivateKeyAsString, parameters) {
      *
      * @param transaction Strex transaction.
      * {
-     *   transactionId, // Transaction id. Must be unique per message if used. Can be used for guarding against resending messages.
      *   merchantId, // Merchant id.
-     *   shortNumber, // Short number.
-     *   recipient, // Recipient phone number.
-     *   price, // Price.
      *   serviceCode, // Service code.
      *   invoiceText, // Invoice text.
-     *   statusCode, // Status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
+     *   price, // Price.
+     *   billed, // Read-only: Whether billing has been performed. Null means unknown status.
+     *   transactionId, // Transaction id. Must be unique per message if used. Can be used for guarding against resending messages.
      *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
      *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
+     *   shortNumber, // Short number.
+     *   recipient, // Recipient phone number.
+     *   content, // SMS content.
      *   oneTimePassword, // One-Time-Password. Used with previously sent one-time-passwords.
-     *   properties, // Custom properties associated with transaction.
+     *   deliveryMode, // Delivery mode. Can be 'AtMostOnce' or 'AtLeastOnce'. 'AtMostOnce' is default.
+     *   statusCode, // Status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   tags // Tags associated with transaction. Can be used for statistics and grouping.
-     *   billed, // Read-only: Whether billing has been performed. Null means unknown status.
-     *   created, // Created time. Read-only property.
-     *   lastModified, // Last modified time. Read-only property.
+     *   properties, // Custom properties associated with transaction.
+     *   created, // Read-only: Created time.
+     *   lastModified, // Read-only: Last modified time.
      * }
      *
      * @return Void
@@ -949,20 +951,22 @@ function Client(ecPrivateKeyAsString, parameters) {
 
         const schema = joi.object().keys({
             transaction: joi.object().keys({
-                transactionId: joi.string().required(),
                 merchantId: joi.string().required(),
-                shortNumber: joi.string().required(),
-                recipient: joi.string().required(),
-                price: joi.number().required(),
                 serviceCode: joi.string().required(),
                 invoiceText: joi.string().required(),
-                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
+                price: joi.number().required(),
+                billed: joi.boolean().optional(),
+                transactionId: joi.string().required(),
                 sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
+                shortNumber: joi.string().required(),
+                recipient: joi.string().required(),
+                content: joi.string().required(),
                 oneTimePassword: joi.string().optional(),
-                properties: joi.object().optional(),
+                deliveryMode: joi.string().optional().valid('AtMostOnce', 'AtLeastOnce'),
+                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 tags: joi.array().optional(),
-                billed: joi.boolean().optional(),
+                properties: joi.object().optional(),                
                 created: joi.string().optional(),
                 lastModified: joi.string().optional()
             }).required()
