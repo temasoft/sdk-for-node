@@ -587,53 +587,10 @@ describe('', () => {
 
     describe('Strex', () => {
         describe('Integration', () => {
-            it('strex merchant should be created, updated and deleted', () => {
-                let strexMerchantId = {
-                    merchantId: '10000001',
-                    shortNumberIds: ['NO-0000'],
-                    password: 'test'
-                };
-
-                // Delete strex merchant id if it exists (data cleanup)
-                return client.getMerchantIds()
-                    .then((strexMerchantIds) => strexMerchantIds.map((smid) => smid.merchantId === strexMerchantId.merchantId))
-                    .then((strexMerchantIds) => Promise.all(strexMerchantIds.map((smid) => client.deleteMerchantId(smid.merchantId))))
-                    // Create strex merchant id
-                    .then(() => client.putMerchantId(strexMerchantId))
-                    // Read strex merchant id
-                    .then(() => client.getMerchantId(strexMerchantId.merchantId))
-                    // Verify created strex merchant id
-                    .then((created) => {
-                        expect(created.merchantId).to.equal(strexMerchantId.merchantId);
-                        expect(created.shortNumberIds).to.eql(strexMerchantId.shortNumberIds);
-                        expect(created.password).to.equal(null);
-                    })
-                    // Update strex merchant id
-                    .then(() => client.putMerchantId({
-                        merchantId: strexMerchantId.merchantId, shortNumberId: strexMerchantId.shortNumberId,
-                        password: strexMerchantId.password + '-test'
-                    }))
-                    // Read strex merchant id
-                    .then(() => client.getMerchantId(strexMerchantId.merchantId))
-                    // Verify updated strex merchant id
-                    .then((updated) => {
-                        expect(updated.merchantId).to.equal(strexMerchantId.merchantId);
-                        expect(updated.shortNumberIds).to.eql(strexMerchantId.shortNumberIds);
-                        expect(updated.password).to.equal(null);
-                    })
-                    // Delete strex merchant id
-                    .then(() => client.deleteMerchantId(strexMerchantId.merchantId))
-                    // Verify deleted strex merchant id
-                    .then(() => client.getMerchantId(strexMerchantId.merchantId))
-                    .then((deleted) => {
-                        expect(deleted).to.be.equal(null);
-                    });
-            });
-
             it('strex one time password should be created and verified', () => {
                 let strexOneTimePassword = {
                     transactionId: uuidv4(),
-                    merchantId: '10000002',
+                    merchantId: 'JavaSdkTest',
                     recipient: '+4798079008',
                     recurring: false
                 };
@@ -653,10 +610,10 @@ describe('', () => {
             it('strex transaction should be created, verified and reversed', () => {
                 let strexTransaction = {
                     transactionId: uuidv4(),
-                    merchantId: '10000001',
+                    merchantId: 'JavaSdkTest',
                     shortNumber: '0000',
                     recipient: '+4798079008',
-                    price: 1000,
+                    price: 1,
                     serviceCode: '10001',
                     invoiceText: 'Test Invoice Text'
                 };
@@ -798,10 +755,10 @@ describe('', () => {
                     });
                 });
 
-                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.recipient, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
+                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
                     return client.postStrexTransaction({}).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"recipient" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
                     });
                 });
 
@@ -874,9 +831,6 @@ describe('', () => {
                         expect(clientPublicKey.signAlgo).to.equal('ECDsaP256');
                         expect(clientPublicKey.hashAlgo).to.equal('SHA256');
                     });
-
-                // TODO This function was never tested, as if to delete client public key, there is not way to add it back easily
-                // client.deleteClientPublicKey()
             });
 
             it('client public key should be verified', () => {
