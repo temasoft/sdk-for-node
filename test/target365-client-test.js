@@ -615,7 +615,7 @@ describe('', () => {
                     recipient: '+4798079008',
                     price: 1,
                     serviceCode: '10001',
-                    invoiceText: 'Test Invoice Text'
+                    invoiceText: 'Test'
                 };
 
                 // Create strex transaction
