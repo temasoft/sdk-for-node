@@ -755,10 +755,10 @@ describe('', () => {
                     });
                 });
 
-                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
+							it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
                     return client.postStrexTransaction({}).then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
+											expect(response.error).to.equal('InvalidInput');
+											expect(response.constraints).to.have.members(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
                     });
                 });
 
@@ -773,7 +773,7 @@ describe('', () => {
                         invoiceText: ''
                     }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
+                        expect(response.constraints).to.have.members(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
                     });
                 });
             });
