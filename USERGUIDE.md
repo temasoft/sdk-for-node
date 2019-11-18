@@ -13,6 +13,10 @@
     * [Create a Strex payment transaction](#create-a-strex-payment-transaction)
     * [Create a Strex payment transaction with one-time password](#create-a-strex-payment-transaction-with-one-time-password)
     * [Reverse a Strex payment transaction](#reverse-a-strex-payment-transaction)
+* [One-click transactions](#one-click-transactions)
+    * [One-time transaction](#one-time-transaction)
+    * [Setup subscription transaction](#setup-subscription-transaction)
+    * [Recurring transaction](#recurring-transaction)
 * [Lookup](#lookup)
     * [Address lookup for mobile number](#address-lookup-for-mobile-number)
 * [Keywords](#keywords)
@@ -140,6 +144,65 @@ The reversal is an asynchronous operation that usually takes a few seconds to fi
 ```Node
 let reversalTransactionId = serviceClient.reverseStrexTransaction(transactionId);
 ```
+## One-click transactions
+
+### One-time transaction
+This example sets up a simple one-time transaction for one-click. After creation you can redirect the end-user to the one-click landing page by redirecting to http://betal.strex.no/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for PROD and http://strex-test.target365.io/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for TEST-environment.
+![one-time sequence](https://github.com/Target365/sdk-for-node/raw/master/oneclick-simple-transaction-flow.png "One-time sequence diagram")
+
+```Node
+let transaction = {
+    transactionId: transactionId,
+    merchantId: 'YOUR_MERCHANT_ID',
+    shortNumber: '2002',
+    price: 1,
+    serviceCode: '10001',
+    invoiceText: 'Donation test',
+    properties: { "RedirectUrl": "https://your-return-url.com?id=" + transactionId }
+};
+
+serviceClient.postStrexTransaction(transaction);
+
+// TODO: Redirect end-user to one-click landing page
+```
+### Setup subscription transaction
+This example sets up a subscription transaction for one-click. After creation you can redirect the end-user to the one-click landing page by redirecting to http://betal.strex.no/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for PROD and http://strex-test.target365.io/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for TEST-environment.
+![subscription sequence](https://github.com/Target365/sdk-for-node/raw/master/oneclick-subscription-flow.png "Subscription sequence diagram")
+```Node
+let transaction = {
+    transactionId: transactionId,
+    merchantId: 'YOUR_MERCHANT_ID',
+    shortNumber: '2002',
+    price: 1,
+    serviceCode: '10001',
+    invoiceText: 'Donation test',
+    properties: { "Recurring": true, "RedirectUrl": "https://your-return-url.com?id=" + transactionId }
+};
+
+serviceClient.postStrexTransaction(transaction);
+
+// TODO: Redirect end-user to one-click landing page
+```
+### Recurring transaction
+This example sets up a recurring transaction for one-click. After creation you can immediately get the transaction to get the status code - the server will wait up to 20 seconds for the async transaction to complete.
+![Recurring sequence](https://github.com/Target365/sdk-for-net/raw/master/oneclick-recurring-flow.png "Recurring sequence diagram")
+```Node
+let transaction = {
+    transactionId: transactionId,
+    recipient: "RECIPIENT_FROM_SUBSCRIPTION_TRANSACTION",
+    merchantId: 'YOUR_MERCHANT_ID',
+    shortNumber: '2002',
+    price: 1,
+    serviceCode: '10001',
+    invoiceText: 'Donation test'
+};
+
+serviceClient.postStrexTransaction(transaction);
+transaction = serviceClient.getStrexTransaction(transactionId);
+
+// TODO: Check transaction.StatusCode
+```
+
 ## Lookup
 
 ### Address lookup for mobile number
