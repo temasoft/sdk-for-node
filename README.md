@@ -2,13 +2,27 @@
 [![License](https://img.shields.io/github/license/Target365/sdk-for-node.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 ### Getting started
-To get started please send us an email at <support@target365.no> containing your EC public key in DER(ANS.1) format.
-If you want, you can generate your EC public/private key-pair here: <https://8gwifi.org/sshfunctions.jsp>.
+To get started please send us an email at <support@target365.no> containing your EC public key in PEM-format.
+You can generate your EC public/private key-pair using openssl like this:
+```
+openssl ecparam -name prime256v1 -genkey -noout -out mykey.pem
+```
+Use this openssl command to extract the public key in PEM-format:
+```
+openssl ec -in mykey.pem -pubout -out pubkey.pem
+```
+You can then send us the pubkey.pem file. The file should look something like this:
+```
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEuVHnFqJxiBC9I5+8a8Sx66brBCz3
+Flt70WN9l7WZ8VQVN9DZt0kW5xpiO5aG7qd5K8OcHZeoJRprFJOkBwW4Fg==
+-----END PUBLIC KEY-----
+```
 
-Check out our [Node User Guide](USERGUIDE.md).
+For more details on using the SDK we strongly suggest you check out our [Node User Guide](USERGUIDE.md).
 
 ### npm
-```Xml
+```
 npm install target365-sdk
 ```
 [![npm version](https://badge.fury.io/js/target365-sdk.svg)](https://www.npmjs.com/package/target365-sdk)
