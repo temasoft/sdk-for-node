@@ -4,7 +4,8 @@ Strex AS is a Norwegian payment and SMS gateway (Strex Connect) provider. Strex 
 [![License](https://img.shields.io/github/license/Target365/sdk-for-node.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 ### Getting started
-To get started please send us an email at <sdk@strex.no> containing your EC public key in PEM-format.
+To get started, please click here: https://strex.no/strex-connect#Prispakker and register your organisation. 
+For the SDK please send us an email at <sdk@strex.no> containing your EC public key in PEM-format.
 You can generate your EC public/private key-pair using openssl like this:
 ```
 openssl ecparam -name prime256v1 -genkey -noout -out mykey.pem
