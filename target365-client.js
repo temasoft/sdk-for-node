@@ -508,6 +508,9 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   deliveryMode, // Message delivery mode. Can be either 'AtLeastOnce' or 'AtMostOnce'. If omitted, default value is 'AtMostOnce'.
      *   merchantId, // Merchant id. Only used for STREX messages.
      *   serviceCode, // Service code. Only used for STREX messages.
+     *   businessModel, // Business model. Only used for STREX messages.
+     *   age, // Age. Only used for STREX messages.
+     *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
      *   deliveryReportUrl, // Delivery report url.
@@ -543,6 +546,9 @@ function Client(ecPrivateKeyAsString, parameters) {
                 strex: joi.object().keys({
                     merchantId: joi.string().required(),
                     serviceCode: joi.string().required(),
+                    businessModel: joi.string().optional(),
+                    age: joi.number().optional(),
+                    isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
                     price: joi.number().required()
                 }).optional(),
@@ -580,6 +586,9 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   deliveryMode, // Message delivery mode. Can be either 'AtLeastOnce' or 'AtMostOnce'. If omitted, default value is 'AtMostOnce'.
      *   merchantId, // Merchant id. Only used for STREX messages.
      *   serviceCode, // Service code. Only used for STREX messages.
+     *   businessModel, // Business model. Only used for STREX messages.
+     *   age, // Age. Only used for STREX messages.
+     *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
      *   deliveryReportUrl, // Delivery report url.
@@ -615,6 +624,9 @@ function Client(ecPrivateKeyAsString, parameters) {
                 strex: joi.object().keys({
                     merchantId: joi.string().required(),
                     serviceCode: joi.string().required(),
+                    businessModel: joi.string().optional(),
+                    age: joi.number().optional(),
+                    isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
                     price: joi.number().required()
                 }).optional(),
@@ -674,6 +686,9 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   deliveryMode, // Message delivery mode. Can be either 'AtLeastOnce' or 'AtMostOnce'. If omitted, default value is 'AtMostOnce'.
      *   merchantId, // Merchant id. Only used for STREX messages.
      *   serviceCode, // Service code. Only used for STREX messages.
+     *   businessModel, // Business model. Only used for STREX messages.
+     *   age, // Age. Only used for STREX messages.
+     *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
      *   deliveryReportUrl, // Delivery report url.
@@ -708,6 +723,9 @@ function Client(ecPrivateKeyAsString, parameters) {
                 strex: joi.object().keys({
                     merchantId: joi.string().required(),
                     serviceCode: joi.string().required(),
+                    businessModel: joi.string().optional(),
+                    age: joi.number().optional(),
+                    isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
                     price: joi.number().required()
                 }).optional(),
@@ -807,57 +825,6 @@ function Client(ecPrivateKeyAsString, parameters) {
     };
 
     /**
-     * Updates or creates a new merchant id.
-     *
-     * @param strexMerchantId Merchant object to post, with the next structure:
-     * {
-     *   merchantId, // Strex merchant id.
-     *   shortNumberId, // Short number id.
-     *   password // This is a write-only property and will always return null.
-     * }
-     *
-     * @return No content
-     */
-    this.putMerchantId = (strexMerchantId) => {
-        const object = {
-            strexMerchantId: strexMerchantId
-        };
-
-        const schema = joi.object().keys({
-            strexMerchantId: joi.object().keys({
-                merchantId: joi.string().required(),
-                shortNumberIds: joi.array().items(joi.string()).required(),
-                password: joi.string().optional(),
-            }).required()
-        });
-
-        return validate(object, schema, () => doPut('api/strex/merchants/' + encodeURIComponent(strexMerchantId.merchantId), JSON.stringify(strexMerchantId), {
-            204: (response) => ''
-        }));
-    };
-
-    /**
-     * Deletes a merchant id.
-     *
-     * @param merchantId Strex merchant id.
-     *
-     * @return No content
-     */
-    this.deleteMerchantId = (merchantId) => {
-        const object = {
-            merchantId: merchantId
-        };
-
-        const schema = joi.object().keys({
-            merchantId: joi.string().required()
-        });
-
-        return validate(object, schema, () => doDelete('api/strex/merchants/' + encodeURIComponent(merchantId), {
-            204: (response) => ''
-        }));
-    };
-
-    /**
      * Creates a new one-time password.
      *
      * @param oneTimePassword Strex one-time password.
@@ -922,24 +889,25 @@ function Client(ecPrivateKeyAsString, parameters) {
      *
      * @param transaction Strex transaction.
      * {
-     *   merchantId, // Merchant id.
-     *   serviceCode, // Service code.
-     *   invoiceText, // Invoice text.
-     *   price, // Price.
-     *   billed, // Read-only: Whether billing has been performed. Null means unknown status.
      *   transactionId, // Transaction id. Must be unique per message if used. Can be used for guarding against resending messages.
-     *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
-     *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
+     *   merchantId, // Merchant id.
      *   shortNumber, // Short number.
      *   recipient, // Recipient phone number.
-     *   content, // SMS content.
-     *   oneTimePassword, // One-Time-Password. Used with previously sent one-time-passwords.
-     *   deliveryMode, // Delivery mode. Can be 'AtMostOnce' or 'AtLeastOnce'. 'AtMostOnce' is default.
+     *   price, // Price.
+     *   serviceCode, // Service code.
+     *   businessModel, // Business model. Only used for STREX messages.
+     *   age, // Age. Only used for STREX messages.
+     *   isRestricted, // IsRestricted. Only used for STREX messages.
+     *   invoiceText, // Invoice text.
      *   statusCode, // Status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
-     *   tags // Tags associated with transaction. Can be used for statistics and grouping.
+     *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
+     *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
+     *   oneTimePassword, // One-Time-Password. Used with previously sent one-time-passwords.
      *   properties, // Custom properties associated with transaction.
-     *   created, // Read-only: Created time.
-     *   lastModified, // Read-only: Last modified time.
+     *   tags // Tags associated with transaction. Can be used for statistics and grouping.
+     *   billed, // Read-only: Whether billing has been performed. Null means unknown status.
+     *   created, // Created time. Read-only property.
+     *   lastModified, // Last modified time. Read-only property.
      * }
      *
      * @return Void
@@ -951,22 +919,23 @@ function Client(ecPrivateKeyAsString, parameters) {
 
         const schema = joi.object().keys({
             transaction: joi.object().keys({
-                merchantId: joi.string().required(),
-                serviceCode: joi.string().required(),
-                invoiceText: joi.string().required(),
-                price: joi.number().required(),
-                billed: joi.boolean().optional(),
                 transactionId: joi.string().required(),
+                merchantId: joi.string().required(),
+                shortNumber: joi.string().required(),
+                recipient: joi.string().required(),
+                price: joi.number().required(),
+                serviceCode: joi.string().required(),
+                businessModel: joi.string().optional(),
+                age: joi.number().optional(),
+                isRestricted: joi.bool().optional(),
+                invoiceText: joi.string().required(),
+                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
-                shortNumber: joi.string().required(),
-                recipient: joi.string().optional(),
-                content: joi.string().optional(),
                 oneTimePassword: joi.string().optional(),
-                deliveryMode: joi.string().optional().valid('AtMostOnce', 'AtLeastOnce'),
-                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
+                properties: joi.object().optional(),
                 tags: joi.array().optional(),
-                properties: joi.object().optional(),                
+                billed: joi.boolean().optional(),
                 created: joi.string().optional(),
                 lastModified: joi.string().optional()
             }).required()

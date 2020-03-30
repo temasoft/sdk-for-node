@@ -226,8 +226,7 @@ describe('', () => {
                 // Lookup and verify address
                 return client.addressLookup(msisdn).then((lookupResult) => {
                     expect(lookupResult.msisdn).to.equal("+4798079008");
-                    expect(lookupResult.firstName).to.equal('Hans Olav');
-
+                    expect(lookupResult.firstName).to.equal('Hans');
                     expect(lookupResult.lastName).to.equal('Stjernholm');
                     expect(lookupResult.gender).to.equal('M');
                 });
@@ -267,28 +266,14 @@ describe('', () => {
                 };
 
                 let outMessage = {
-                    sender: 'MsgSender',
+                    sender: 'Target365',
                     recipient: '+4798079008',
                     content: 'OutMessage 0001',
                     sendTime: moment().add(1, 'days').format()
                 };
 
-                // Prepare msisdns
-                return client.prepareMsisdns([msisdn])
-                    // Create out-message batch
-                    .then(() => client.postOutMessageBatch([outMessageForBatch]))
-                    .then((transactionIdsBatch) => transactionIdsBatch[0])
-                    // Read out-message batch
-                    .then((transactionIdBatch) => client.getOutMessage(transactionIdBatch))
-                    // Verify created out-message batch
-                    .then((createdBatch) => {
-                        expect(createdBatch.sender).to.equal(outMessageForBatch.sender);
-                        expect(createdBatch.recipient).to.equal(outMessageForBatch.recipient);
-                        expect(createdBatch.content).to.equal(outMessageForBatch.content);
-                        expect(createdBatch.transactionId).to.equal(outMessageForBatch.transactionId);
-                    })
-                    // Create out-message
-                    .then(() => client.postOutMessage(outMessage))
+                // Create out-message
+                return client.postOutMessage(outMessage)
                     .then((transactionId) => outMessage.transactionId = transactionId)
                     // Read out-message
                     .then(() => client.getOutMessage(outMessage.transactionId))
@@ -590,7 +575,7 @@ describe('', () => {
             it('strex one time password should be created and verified', () => {
                 let strexOneTimePassword = {
                     transactionId: uuidv4(),
-                    merchantId: 'JavaSdkTest',
+                    merchantId: '10000002',
                     recipient: '+4798079008',
                     recurring: false
                 };
@@ -613,9 +598,12 @@ describe('', () => {
                     merchantId: 'JavaSdkTest',
                     shortNumber: '0000',
                     recipient: '+4798079008',
-                    price: 1,
+                    price: 10,
                     serviceCode: '10001',
-                    invoiceText: 'Test'
+                    businessModel: 'STREX-PAYMENT',
+                    age: 0,
+                    isRestricted: false,
+                    invoiceText: 'Test Invoice Text'
                 };
 
                 // Create strex transaction
@@ -658,45 +646,6 @@ describe('', () => {
 
                 it('merchantId should not be blank', () => {
                     return client.getMerchantId('').then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
-                    });
-                });
-            });
-
-            describe('putMerchantId()', () => {
-                it('strexMerchantId should be required', () => {
-                    return client.putMerchantId().then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"strexMerchantId" is required']);
-                    });
-                });
-
-                it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should be required', () => {
-                    return client.putMerchantId({}).then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is required', '"shortNumberIds" is required']);
-                    });
-                });
-
-                it('strexMerchantId.merchantId, strexMerchantId.shortNumberId should not be blank', () => {
-                    return client.putMerchantId({ merchantId: '', shortNumberIds: '[]' }).then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
-                    });
-                });
-            });
-
-            describe('deleteMerchantId()', () => {
-                it('merchantId should be required', () => {
-                    return client.deleteMerchantId().then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"merchantId" is required']);
-                    });
-                });
-
-                it('merchantId should not be blank', () => {
-                    return client.deleteMerchantId('').then((response) => {
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"merchantId" is not allowed to be empty']);
                     });
@@ -755,10 +704,10 @@ describe('', () => {
                     });
                 });
 
-							it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
+                it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.recipient, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
                     return client.postStrexTransaction({}).then((response) => {
-											expect(response.error).to.equal('InvalidInput');
-											expect(response.constraints).to.have.members(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
+                        expect(response.error).to.equal('InvalidInput');
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"recipient" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
                     });
                 });
 
@@ -773,7 +722,7 @@ describe('', () => {
                         invoiceText: ''
                     }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.have.members(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
                     });
                 });
             });
@@ -831,6 +780,9 @@ describe('', () => {
                         expect(clientPublicKey.signAlgo).to.equal('ECDsaP256');
                         expect(clientPublicKey.hashAlgo).to.equal('SHA256');
                     });
+
+                // TODO This function was never tested, as if to delete client public key, there is not way to add it back easily
+                // client.deleteClientPublicKey()
             });
 
             it('client public key should be verified', () => {
@@ -889,53 +841,6 @@ describe('', () => {
                     return client.deleteClientPublicKey('').then((response) => {
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"keyName" is not allowed to be empty']);
-                    });
-                });
-            });
-        });
-    });
-
-    describe('Verification', () => {
-        describe('Integration', () => {
-            it('signature is verified', () => {
-                // TODO Need to have a message encrypted with a private key, which could be verified by a server public key
-                // client.verifySignature()
-            });
-        });
-
-        describe('Validation', () => {
-            describe('verifySignature()', () => {
-                it('method, uri, xEcdsaSignatureString should be required', () => {
-                    return client.verifySignature().then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"method" is required', '"uri" is required', '"xEcdsaSignatureString" is required']);
-                    });
-                });
-
-                it('method, uri, xEcdsaSignatureString should not be blank', () => {
-                    return client.verifySignature('', '', '', '').then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"method" is not allowed to be empty', '"uri" is not allowed to be empty', '"xEcdsaSignatureString" is not allowed to be empty',
-                            '"xEcdsaSignatureString" with value "" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
-                    });
-                });
-
-                it('xEcdsaSignatureString should match the pattern', () => {
-                    return client.verifySignature('GET', 'uri', '', ':::').then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"xEcdsaSignatureString" with value ":::" fails to match the required pattern: /^[A-Za-z0-9_-]+:[0-9]+:[A-Za-z0-9_-]+:[A-Za-z0-9_+\\/=]+$/']);
-                    });
-                });
-
-                it('timestamp clock-drift should be less than 5 minutes', () => {
-                    const sign = client.getSigner().signHeader('TestKey', 'GET', 'http://test.com', '');
-                    // Replace a timestamp with the one in the past
-                    const parts = sign.replace('HMAC ', '').split(':');
-                    const clockDriftedSign = parts[0] + ':' + moment().subtract(1, 'days').unix() + ':' + parts[2] + ':' + parts[3];
-
-                    return client.verifySignature('GET', 'uri', '', clockDriftedSign).then((response) => {
-                        expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"timestamp" must be greater than ' + moment().subtract(5, 'minutes').unix()]);
                     });
                 });
             });
