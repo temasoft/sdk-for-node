@@ -834,7 +834,9 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   recipient, // Recipient phone number.
      *   sender, // SMS Sender (originator).
      *   recurring, // Whether one-time password is for recurring payment.
-     *   message, // One-time password message. This is prefixed to the generated password message.
+     *   messagePrefix, // Text string which will be prepended to the standard Strex SMS message sent to the subscriber.
+     *   messageSuffix, // Text string which will be appended to the standard Strex SMS message sent to the subscriber.
+     *   message, // Deprecated, use MessagePrefix and MessageSuffix instead.
      *   delivered, // Whether one-time password sms has been delivered. Null means unknown.
      * }
      *
@@ -852,6 +854,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                 recipient: joi.string().required(),
                 sender: joi.string().optional(),
                 recurring: joi.boolean().required(),
+                messagePrefix: joi.string().optional(),
+                messageSuffix: joi.string().optional(),
                 message: joi.string().optional(),
                 delivered: joi.boolean().optional()
             }).required()
