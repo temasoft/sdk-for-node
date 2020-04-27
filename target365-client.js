@@ -513,6 +513,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
+     *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
      *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
      *   lastModified, // Last modified time.
@@ -550,7 +551,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
-                    price: joi.number().required()
+                    price: joi.number().required(),
+                    timeout: joi.number().optional()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 allowUnicode: joi.boolean().optional(),
@@ -591,6 +593,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
+     *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
      *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
      *   lastModified, // Last modified time.
@@ -628,7 +631,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
-                    price: joi.number().required()
+                    price: joi.number().required(),
+                    timeout: joi.number().optional()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 allowUnicode: joi.boolean().optional(),
@@ -691,6 +695,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
      *   price, // Price. Only used for STREX messages.
+     *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
      *   lastModified, // Last modified time.
      *   created, // Created time.
@@ -727,7 +732,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
-                    price: joi.number().required()
+                    price: joi.number().required(),
+                    timeout: joi.number().optional()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 lastModified: joi.string().optional(),
@@ -898,6 +904,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   shortNumber, // Short number.
      *   recipient, // Recipient phone number.
      *   price, // Price.
+     *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   serviceCode, // Service code.
      *   businessModel, // Business model. Only used for STREX messages.
      *   age, // Age. Only used for STREX messages.
@@ -928,6 +935,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 shortNumber: joi.string().required(),
                 recipient: joi.string().required(),
                 price: joi.number().required(),
+                timeout: joi.number().optional(),
                 serviceCode: joi.string().required(),
                 businessModel: joi.string().optional(),
                 age: joi.number().optional(),

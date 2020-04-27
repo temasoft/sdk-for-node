@@ -465,7 +465,8 @@ describe('', () => {
                             "merchantId": "",
                             "serviceCode": "",
                             "invoiceText": "",
-                            "price": 10
+                            "price": 10,
+                            "timeout": 10
                         }
                     }).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
@@ -599,6 +600,7 @@ describe('', () => {
                     shortNumber: '0000',
                     recipient: '+4798079008',
                     price: 10,
+                    timeout: 10,
                     serviceCode: '10001',
                     businessModel: 'STREX-PAYMENT',
                     age: 0,
@@ -616,6 +618,7 @@ describe('', () => {
                         expect(created.shortNumber).to.equal(strexTransaction.shortNumber);
                         expect(created.recipient).to.equal(strexTransaction.recipient);
                         expect(created.price).to.equal(strexTransaction.price);
+                        expect(created.timeout).to.equal(strexTransaction.timeout);
                         expect(created.serviceCode).to.equal(strexTransaction.serviceCode);
                         expect(created.invoiceText).to.equal(strexTransaction.invoiceText);
                     })
@@ -718,6 +721,7 @@ describe('', () => {
                         shortNumber: '',
                         recipient: '',
                         price: 10,
+                        timeout: 10,
                         serviceCode: '',
                         invoiceText: ''
                     }).then((response) => {
