@@ -93,6 +93,7 @@ serviceClient.deleteOutMessage(transactionId);
 
 ### Create a Strex payment transaction
 This example creates a 1 NOK Strex payment transaction that the end user will confirm by replying "OK" to an SMS from Strex.
+You can use message_prefix and message_suffix custom properties to influence the start and end of the SMS sent by Strex.
 ```Node
 let transaction = {
     transactionId: uuidv4(),
@@ -102,7 +103,8 @@ let transaction = {
     price: 1,
     serviceCode: '10001',
     invoiceText: 'Donation test',
-    smsConfirmation: true
+    smsConfirmation: true,
+    properties: { "message_prefix": "Dear customer...", "message_suffix": "Best regards..." }
 };
 
 serviceClient.postStrexTransaction(transaction);
@@ -110,6 +112,7 @@ serviceClient.postStrexTransaction(transaction);
 
 ### Create a Strex payment transaction with one-time password
 This example creates a Strex one-time password sent to the end user and get completes the payment by using the one-time password.
+You can use MessagePrefix and MessageSuffix to influence the start and end of the SMS sent by Strex.
 ```Node
 let transactionId = uuidv4();
 
@@ -117,6 +120,8 @@ let oneTimePassword = {
     transactionId: transactionId,
     merchantId: 'YOUR_MERCHANT_ID',
     recipient: '+4798079008',
+    messagePrefix: 'Dear customer...',
+    messageSuffix: 'Best regards...',
     recurring: false
 };
 
