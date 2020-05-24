@@ -636,6 +636,38 @@ describe('', () => {
                         expect(reversed.invoiceText).to.equal(strexTransaction.invoiceText);
                     })
             });
+
+            it('one-click config should be saved and verified', () => {
+                let oneClickConfig = {
+                    configId: 'APITEST',
+                    shortNumber: '0000',
+                    price: 99,
+                    merchantId: 'JavaSdkTest',
+                    businessModel: 'STREX-PAYMENT',
+                    serviceCode: '14002',
+                    invoiceText: 'Donation test',
+                    onlineText: 'Buy directly',
+                    offlineText: 'Buy with SMS pincode',
+                    redirectUrl: 'https://tempuri.org/node',
+                    isRecurring: false,
+                    isRestricted: false,
+                    timeout: 5,
+                    age: 0
+                };
+
+              return client.putOneClickConfig(oneClickConfig)
+                .then(() => client.getOneClickConfig(oneClickConfig.configId))
+                .then((fetched) => {
+                  expect(fetched.configId).to.equal(oneClickConfig.configId);
+                  expect(fetched.merchantId).to.equal(oneClickConfig.merchantId);
+                  expect(fetched.shortNumber).to.equal(oneClickConfig.shortNumber);
+                  expect(fetched.redirectUrl).to.equal(oneClickConfig.redirectUrl);
+                  expect(fetched.price).to.equal(oneClickConfig.price);
+                  expect(fetched.timeout).to.equal(oneClickConfig.timeout);
+                  expect(fetched.serviceCode).to.equal(oneClickConfig.serviceCode);
+                  expect(fetched.invoiceText).to.equal(oneClickConfig.invoiceText);
+                })
+            });
         });
 
         describe('Validation', () => {

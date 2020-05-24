@@ -13,7 +13,8 @@
     * [Create a Strex payment transaction](#create-a-strex-payment-transaction)
     * [Create a Strex payment transaction with one-time password](#create-a-strex-payment-transaction-with-one-time-password)
     * [Reverse a Strex payment transaction](#reverse-a-strex-payment-transaction)
-* [One-click transactions](#one-click-transactions)
+* [One-click](#one-click)
+    * [One-click config](#one-click-config)
     * [One-time transaction](#one-time-transaction)
     * [Setup subscription transaction](#setup-subscription-transaction)
     * [Recurring transaction](#recurring-transaction)
@@ -150,7 +151,31 @@ The reversal is an asynchronous operation that usually takes a few seconds to fi
 ```Node
 let reversalTransactionId = serviceClient.reverseStrexTransaction(transactionId);
 ```
-## One-click transactions
+## One-click
+
+### One-click config
+This example sets up a one-click config which makes it easier to handle campaigns in one-click where most properties like merchantId, price et cetera are known in advance. You can redirect the end-user to the one-click campaign page by redirecting to http://betal.strex.no/{YOUR-CONFIG-ID} for PROD and http://test-strex.target365.io/{YOUR-CONFIG-ID} for TEST-environment. You can also set the TransactionId by adding ?id={YOUR-TRANSACTION-ID} to the URL.
+
+```Node
+let config = {
+    configId: 'YOUR_CONFIG_ID',
+    shortNumber: '2002',
+    price: 99,
+    merchantId: 'YOUR_MERCHANT_ID',
+    businessModel: 'STREX-PAYMENT',
+    serviceCode: '14002',
+    invoiceText: 'Donation test',
+    onlineText: 'Buy directly',
+    offlineText: 'Buy with SMS pincode',
+    redirectUrl: 'https://your-return-url.com?id={TransactionId}', // {TransactionId} is replaced by actual id
+    isRecurring: false,
+    isRestricted: false,
+    timeout: 5,
+    age: 0
+};
+
+serviceClient.putOneClickConfig(config);
+```
 
 ### One-time transaction
 This example sets up a simple one-time transaction for one-click. After creation you can redirect the end-user to the one-click landing page by redirecting to http://betal.strex.no/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for PROD and http://test-strex.target365.io/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for TEST-environment.

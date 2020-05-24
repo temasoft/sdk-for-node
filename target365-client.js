@@ -1001,6 +1001,85 @@ function Client(ecPrivateKeyAsString, parameters) {
         }));
     };
 
+
+  /**
+   * Creates/updates a one-click config.
+   *
+   * @param config one-click config
+   * {
+   *   configId, // Unique config id.
+   *   shortNumber, // Short number.
+   *   merchantId, // Merchant id.
+   *   serviceCode, // Service code.
+   *   businessModel, // Business model. Only used for STREX messages.
+   *   isRecurring, // Whether this config is for setting up subscriptions and recurring payments.
+   *   redirectUrl, // One-click redirect url.
+   *   onlineText, // One-click online text to use when oneclick msisdn detection is online and PIN-code can be skipped.
+   *   offlineText, // One-click text to use when oneclick msisdn detection is offline and SMS pincode is used.
+   *   age, // Age. Only used for STREX messages.
+   *   isRestricted, // IsRestricted. Only used for STREX messages.
+   *   invoiceText, // Invoice text.
+   *   price, // Price.
+   *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
+   *   created, // Created time. Read-only property.
+   *   lastModified, // Last modified time. Read-only property.
+   * }
+   *
+   * @return Void
+   */
+  this.putOneClickConfig = (config) => {
+    const object = {
+      config: config
+    };
+
+    const schema = joi.object().keys({
+      config: joi.object().keys({
+        configId: joi.string().required(),
+        shortNumber: joi.string().required(),
+        merchantId: joi.string().required(),
+        serviceCode: joi.string().required(),
+        businessModel: joi.string().optional(),
+        isRecurring: joi.bool().optional(),
+        redirectUrl: joi.string().required(),
+        onlineText: joi.string().optional(),
+        offlineText: joi.string().optional(),
+        age: joi.number().optional(),
+        isRestricted: joi.bool().optional(),
+        invoiceText: joi.string().required(),
+        price: joi.number().required(),
+        timeout: joi.number().optional(),
+        created: joi.string().optional(),
+        lastModified: joi.string().optional()
+      }).required()
+    });
+
+    return validate(object, schema, () => doPut('api/one-click/configs/' + encodeURIComponent(config.configId), JSON.stringify(config), {
+      201: (response) => ''
+    }));
+  };
+
+  /**
+   * Gets a one-click config.
+   *
+   * @param configId One-click config id.
+   *
+   * @return A one-click config.
+   */
+  this.getOneClickConfig = (configId) => {
+    const object = {
+      configId: configId
+    };
+
+    const schema = joi.object().keys({
+      configId: joi.string().required()
+    });
+
+    return validate(object, schema, () => doGet('api/one-click/configs/' + encodeURIComponent(configId), [], {
+      200: (response) => response.json(),
+      404: (response) => null
+    }));
+  };
+
     /**
      * Verifies signature
      *
