@@ -668,6 +668,13 @@ describe('', () => {
                   expect(fetched.invoiceText).to.equal(oneClickConfig.invoiceText);
                 })
             });
+
+          it('strex user validity should be full', () => {
+              return client.getStrexUserValidity('+4799031520', 'JavaSdkTest')
+                    .then((userValidity) => {
+                        expect(userValidity).to.equal('Full');
+                    })
+            });
         });
 
         describe('Validation', () => {

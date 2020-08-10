@@ -809,7 +809,7 @@ function Client(ecPrivateKeyAsString, parameters) {
     };
 
     /**
-     * Gets a strex merchant id.
+         * Gets a strex merchant id.
      *
      * @param merchantId Strex merchant id.
      *
@@ -998,6 +998,32 @@ function Client(ecPrivateKeyAsString, parameters) {
 
         return validate(object, schema, () => doDelete('api/strex/transactions/' + encodeURIComponent(transactionId), {
             201: (response) => response.headers.get('location').substring(response.headers.get('location').lastIndexOf('/') + 1)
+        }));
+    };
+
+      /**
+     * Gets Strex user validity.
+     *
+     * @param recipient recipient msisdn.
+     * @param merchantId merchant id (optional).
+     *
+     * @return User validity. Unregistered = 0, Partial = 1, Full = 2, Barred = 3.
+     */
+    this.getStrexUserValidity = (recipient, merchantId) => {
+        const object = {
+            recipient: recipient,
+            merchantId: merchantId
+        };
+
+        const schema = joi.object().keys({
+            recipient: joi.string().required(),
+            merchantId: joi.string().optional()
+        });
+
+        return validate(object, schema, () => doGet('api/strex/validity?recipient=' + encodeURIComponent(recipient)
+          + (merchantId == undefined ? '' : '&merchantId=' + encodeURIComponent(merchantId)), [], {
+            200: (response) => response.json(),
+            404: (response) => null
         }));
     };
 
