@@ -160,7 +160,7 @@ Please note:
 
 * Recurring billing is initiated by merchants, see section Create Strextransaction for more info.
 
-* The final redirect happens in end user's browser, meaning we do not see final result on same. We recommend merchants to include a unique parameter in each forward to OneClick and do lookup on them not redirected to ensure success or failure.
+* Since the one-click flow ends by redirecting the end user to an external merchant-controlled URL we recommend that merchants implement a mechanism to check status on all started transactions. If there’s any issue for the end user on their way to the last page they might have finished the payment, but not been able to get their product.
 
 
 ### One-click config
