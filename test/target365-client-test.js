@@ -316,6 +316,17 @@ describe('', () => {
                         expect(deleted).to.equal(null);
                     });
             });
+
+            // Out-message export
+            it('out-message export should contain CSV data', () => {
+                let from = moment().add(-3, 'days').format();
+                let to = moment().add(-2, 'days').format();
+
+                client.getOutMessageExport(from, to)
+                    .then((csv) => {
+                        expect(csv.startsWith("SendTime,Sender,Recipient,MessageParts,StatusCode,DetailedStatusCode,Operator,Tags")).to.equal(true);
+                    });
+            });
         });
 
         describe('Validation', () => {

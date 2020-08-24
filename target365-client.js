@@ -773,6 +773,30 @@ function Client(ecPrivateKeyAsString, parameters) {
     };
 
     /**
+     * Get out-message export stream in CSV format.
+     *
+     * @param from From datetime, in UTC.
+     * @param to To datetime, in UTC.
+     *
+     * @return string export in CSV format.
+     */
+    this.getOutMessageExport = (from, to) => {
+        const object = {
+            from: from,
+            to: to,
+        };
+
+        const schema = joi.object().keys({
+            from: joi.string().required(),
+            to: joi.string().required(),
+        });
+
+        return validate(object, schema, () => doGet('api/export/out-messages?from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to), [], {
+            200: (response) => response.text()
+        }));
+    };
+
+    /**
      * Gets an in-message.
      *
      * @param shortNumberId Short number id.
