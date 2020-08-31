@@ -587,7 +587,7 @@ describe('', () => {
             it('strex one time password should be created and verified', () => {
                 let strexOneTimePassword = {
                     transactionId: uuidv4(),
-                    merchantId: '10000002',
+                    merchantId: 'JavaSdkTest',
                     recipient: '+4798079008',
                     recurring: false
                 };
@@ -597,6 +597,7 @@ describe('', () => {
                     .then(() => client.getStrexOneTimePassword(strexOneTimePassword.transactionId))
                     // Verify created strex one time password
                     .then((created) => {
+                        expect(created).to.not.equal(null);
                         expect(created.transactionId).to.equal(strexOneTimePassword.transactionId);
                         expect(created.merchantId).to.equal(strexOneTimePassword.merchantId);
                         expect(created.recipient).to.equal(strexOneTimePassword.recipient);
