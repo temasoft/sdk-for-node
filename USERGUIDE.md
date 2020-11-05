@@ -169,7 +169,10 @@ let config = {
     onlineText: 'Buy directly',
     offlineText: 'Buy with SMS pincode',
     redirectUrl: 'https://your-return-url.com?id={TransactionId}', // {TransactionId} is replaced by actual id
-    isRecurring: false,
+    subscriptionInterval: 'monthly',
+    subscriptionPrice: 99,
+    subscriptionStartSms: 'Thanks for donating 99kr each month.'
+    isRecurring: true,
     isRestricted: false,
     timeout: 5,
     age: 0
@@ -177,6 +180,17 @@ let config = {
 
 serviceClient.putOneClickConfig(config);
 ```
+
+If Recurring is set to 'false', the following parameters are optional:
+
+* subscriptionInterval - Possible values are "weekly", "monthly", "yearly"
+
+* subscriptionPrice - How much the subscriber will be charged each interval
+
+This parameter is optional:
+
+* subscriptionStartSms - SMS that will be sent to the user when subscription starts.
+
 
 ### One-time transaction
 This example sets up a simple one-time transaction for one-click. After creation you can redirect the end-user to the one-click landing page by redirecting to http://betal.strex.no/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for PROD and http://test-strex.target365.io/{YOUR-ACCOUNT-ID}/{YOUR-TRANSACTION-ID} for TEST-environment.

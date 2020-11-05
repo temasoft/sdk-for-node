@@ -1046,6 +1046,9 @@ function Client(ecPrivateKeyAsString, parameters) {
    *   isRestricted, // IsRestricted. Only used for STREX messages.
    *   invoiceText, // Invoice text.
    *   price, // Price.
+   *   subscriptionPrice // Subscription price displayed to user if recurring is true
+   *   subscriptionInterval // Subscription interval displayed to user if recurring is true. Possible values are "weekly", "monthly", "yearly".
+   *   subscriptionStartSms // SMS that will be sent to the user when subscription starts.
    *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
    *   created, // Created time. Read-only property.
    *   lastModified, // Last modified time. Read-only property.
@@ -1073,6 +1076,9 @@ function Client(ecPrivateKeyAsString, parameters) {
         isRestricted: joi.bool().optional(),
         invoiceText: joi.string().required(),
         price: joi.number().required(),
+        subscriptionPrice: joi.number().optional(),
+        subscriptionInterval: joi.string().optional(),
+        subscriptionStartSms: joi.string().optional(),
         timeout: joi.number().optional(),
         created: joi.string().optional(),
         lastModified: joi.string().optional()
