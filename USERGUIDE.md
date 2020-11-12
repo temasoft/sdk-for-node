@@ -42,7 +42,7 @@ const Client = require('target365-sdk');
 
 let baseUrl = "https://shared.target365.io/";
 let keyName = "YOUR_KEY";
-let privateKey = "BASE64_EC_PRIVATE_KEY";
+let privateKey = "-----BEGIN PRIVATE KEY-----\r\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgzNTTnuXqcrI5uSEa\r\n...";
 let serviceClient = new Client(privateKey, { baseUrl, keyName });
 ```
 ## Text messages
