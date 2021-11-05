@@ -597,6 +597,7 @@ describe('', () => {
                     .then(() => client.getStrexOneTimePassword(strexOneTimePassword.transactionId))
                     // Verify created strex one time password
                     .then((created) => {
+                        expect(created).to.not.equal(null);
                         expect(created.transactionId).to.equal(strexOneTimePassword.transactionId);
                         expect(created.merchantId).to.equal(strexOneTimePassword.merchantId);
                         expect(created.recipient).to.equal(strexOneTimePassword.recipient);
@@ -660,7 +661,10 @@ describe('', () => {
                     onlineText: 'Buy directly',
                     offlineText: 'Buy with SMS pincode',
                     redirectUrl: 'https://tempuri.org/node',
-                    isRecurring: false,
+                    subscriptionPrice: 99,
+                    subscriptionInterval: "monthly",
+                    subscriptionStartSms: "Thanks for donating 99kr each month",
+                    isRecurring: true,
                     isRestricted: false,
                     timeout: 5,
                     age: 0
