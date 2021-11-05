@@ -779,8 +779,6 @@ describe('', () => {
                         serviceCode: '',
                         invoiceText: ''
                     }).then((response) => {
-                        console.log(response.error);
-                        console.log(response.constraints);
                         expect(response.error).to.equal('InvalidInput');
                         expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
                     });
