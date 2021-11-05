@@ -393,7 +393,8 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   created, // Creation date.
      *   lastModified, // Last modified date.
      *   customProperties, // Custom properties associated with keyword. Will be propagated to incoming messages.
-     *   tags // Tags associated with keyword. Can be used for statistics and grouping.
+     *   tags, // Tags associated with keyword. Can be used for statistics and grouping.
+     *   aliases, // Alias keywords associated with keyword.
      * }
      *
      * @return No content
@@ -414,7 +415,8 @@ function Client(ecPrivateKeyAsString, parameters) {
                 created: joi.string().optional(),
                 lastModified: joi.string().optional(),
                 customProperties: joi.object().optional(),
-                tags: joi.array().optional()
+                tags: joi.array().optional(),
+                aliases: joi.array().optional()
             }).required()
         });
 
@@ -497,6 +499,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      * @param outMessages Out-messages to post. Out-message structure:
      * {
      *   transactionId, // Transaction id. Must be unique per message if used. This can be used for guarding against resending messages.
+     *   sessionId, // Session id. This can be used as the clients to get all out-messages associated to a specific session.
      *   correlationId, // Correlation id. This can be used as the clients correlation id for tracking messages and delivery reports.
      *   keywordId, // Keyword id associated with message. Can be null.
      *   sender, // Sender. Can be an alphanumeric string, a phone number or a short number.
@@ -516,10 +519,13 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
      *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
+     *   smscTransactionId, // External SMSC transaction id.
+     *   smscMessageParts, // SMSC message parts.
      *   lastModified, // Last modified time.
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   delivered, // Whether message was delivered. Null if status is unknown.
+     *   operatorId, // Operator id (from delivery report).
      *   billed, // Whether billing was performed. Null if status is unknown.
      *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
@@ -535,6 +541,7 @@ function Client(ecPrivateKeyAsString, parameters) {
         const schema = joi.object().keys({
             outMessages: joi.array().items(joi.object().keys({
                 transactionId: joi.string().optional(),
+                sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
                 keywordId: joi.string().optional(),
                 sender: joi.string().required(),
@@ -556,10 +563,13 @@ function Client(ecPrivateKeyAsString, parameters) {
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 allowUnicode: joi.boolean().optional(),
+                smscTransactionId: joi.string().optional(),
+                smscMessageParts: joi.number().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 delivered: joi.boolean().optional(),
+                operatorId: joi.string().optional(),
                 billed: joi.boolean().optional(),
                 properties: joi.object().optional(),
                 tags: joi.array().optional()
@@ -577,6 +587,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      * @param outMessage Out-message to post, with the next structure:
      * {
      *   transactionId, // Transaction id. Must be unique per message if used. This can be used for guarding against resending messages.
+     *   sessionId, // Session id. This can be used as the clients to get all out-messages associated to a specific session.
      *   correlationId, // Correlation id. This can be used as the clients correlation id for tracking messages and delivery reports.
      *   keywordId, // Keyword id associated with message. Can be null.
      *   sender, // Sender. Can be an alphanumeric string, a phone number or a short number.
@@ -596,10 +607,14 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
      *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
+     *   smscTransactionId, // External SMSC transaction id.
+     *   smscMessageParts, // SMSC message parts.
      *   lastModified, // Last modified time.
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
+     *   detailedStatusCode, // Detailed status code.
      *   delivered, // Whether message was delivered. Null if status is unknown.
+     *   operatorId, // Operator id (from delivery report).
      *   billed, // Whether billing was performed. Null if status is unknown.
      *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
@@ -615,6 +630,7 @@ function Client(ecPrivateKeyAsString, parameters) {
         const schema = joi.object().keys({
             outMessage: joi.object().keys({
                 transactionId: joi.string().optional(),
+                sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
                 keywordId: joi.string().optional(),
                 sender: joi.string().required(),
@@ -636,10 +652,14 @@ function Client(ecPrivateKeyAsString, parameters) {
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
                 allowUnicode: joi.boolean().optional(),
+                smscTransactionId: joi.string().optional(),
+                smscMessageParts: joi.number().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
+                detailedStatusCode: joi.string().optional(),
                 delivered: joi.boolean().optional(),
+                operatorId: joi.string().optional(),
                 billed: joi.boolean().optional(),
                 properties: joi.object().optional(),
                 tags: joi.array().optional()
@@ -679,6 +699,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      * @param outMessage Text message to post, with the next structure:
      * {
      *   transactionId, // Transaction id. Must be unique per message if used. This can be used for guarding against resending messages.
+     *   sessionId, // Session id. This can be used as the clients to get all out-messages associated to a specific session.
      *   correlationId, // Correlation id. This can be used as the clients correlation id for tracking messages and delivery reports.
      *   keywordId, // Keyword id associated with message. Can be null.
      *   sender, // Sender. Can be an alphanumeric string, a phone number or a short number.
@@ -697,10 +718,15 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   price, // Price. Only used for STREX messages.
      *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   deliveryReportUrl, // Delivery report url.
+     *   allowUnicode, // True to allow unicode SMS, false to fail if content is unicode, null to replace unicode chars to '?'.
+     *   smscTransactionId, // External SMSC transaction id.
+     *   smscMessageParts, // SMSC message parts.
      *   lastModified, // Last modified time.
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
+     *   detailedStatusCode, // Detailed status code.
      *   delivered, // Whether message was delivered. Null if status is unknown.
+     *   operatorId, // Operator id (from delivery report).
      *   billed, // Whether billing was performed. Null if status is unknown.
      *   properties, // Custom properties associated with message.
      *   tags // Tags associated with message. Can be used for statistics and grouping.
@@ -716,6 +742,7 @@ function Client(ecPrivateKeyAsString, parameters) {
         const schema = joi.object().keys({
             outMessage: joi.object().keys({
                 transactionId: joi.string().required(),
+                sessionId: joi.string().optional(),
                 correlationId: joi.string().optional(),
                 keywordId: joi.string().optional(),
                 sender: joi.string().required(),
@@ -736,10 +763,15 @@ function Client(ecPrivateKeyAsString, parameters) {
                     timeout: joi.number().optional()
                 }).optional(),
                 deliveryReportUrl: joi.string().optional(),
+                allowUnicode: joi.boolean().optional(),
+                smscTransactionId: joi.string().optional(),
+                smscMessageParts: joi.number().optional(),
                 lastModified: joi.string().optional(),
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
+                detailedStatusCode: joi.string().optional(),
                 delivered: joi.boolean().optional(),
+                operatorId: joi.string().optional(),
                 billed: joi.boolean().optional(),
                 properties: joi.object().optional(),
                 tags: joi.array().optional()
@@ -867,6 +899,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   messagePrefix, // Text string which will be prepended to the standard Strex SMS message sent to the subscriber.
      *   messageSuffix, // Text string which will be appended to the standard Strex SMS message sent to the subscriber.
      *   message, // Deprecated, use MessagePrefix and MessageSuffix instead.
+     *   timeToLive, // Time-To-Live (TTL) in minutes. Must be between 1 and 1440. Default value is 2.
      *   delivered, // Whether one-time password sms has been delivered. Null means unknown.
      * }
      *
@@ -887,6 +920,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 messagePrefix: joi.string().optional(),
                 messageSuffix: joi.string().optional(),
                 message: joi.string().optional(),
+                timeToLive: joi.number().optional(),
                 delivered: joi.boolean().optional()
             }).required()
         });
@@ -924,9 +958,12 @@ function Client(ecPrivateKeyAsString, parameters) {
      * @param transaction Strex transaction.
      * {
      *   transactionId, // Transaction id. Must be unique per message if used. Can be used for guarding against resending messages.
-     *   merchantId, // Merchant id.
+     *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
+     *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
      *   shortNumber, // Short number.
      *   recipient, // Recipient phone number.
+     *   content, // SMS text message content (not used for direct billing).
+     *   merchantId, // Merchant id.
      *   price, // Price.
      *   timeout, // Timeout in minutes for transactions which trigger end user registration. Default value is 5.
      *   serviceCode, // Service code.
@@ -935,8 +972,6 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text.
      *   statusCode, // Status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
-     *   sessionId, // Session id. Can be used as the clients to get all out-messages associated to a specific session.
-     *   correlationId, // Correlation id. Can be used as the clients correlation id for tracking messages and delivery reports.
      *   oneTimePassword, // One-Time-Password. Used with previously sent one-time-passwords.
      *   properties, // Custom properties associated with transaction.
      *   tags // Tags associated with transaction. Can be used for statistics and grouping.
@@ -955,25 +990,32 @@ function Client(ecPrivateKeyAsString, parameters) {
         const schema = joi.object().keys({
             transaction: joi.object().keys({
                 transactionId: joi.string().required(),
-                merchantId: joi.string().required(),
+                sessionId: joi.string().optional(),
+                correlationId: joi.string().optional(),
                 shortNumber: joi.string().required(),
-                recipient: joi.string().required(),
-                price: joi.number().required(),
-                timeout: joi.number().optional(),
+                recipient: joi.string().optional(),
+                content: joi.string().optional(),
+                oneTimePassword: joi.string().optional(),
+                deliveryMode: joi.string().optional().valid('AtLeastOnce', 'AtMostOnce'),
+                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
+                detailedStatusCode: joi.string().optional(),
+                smscTransactionId: joi.string().optional(),
+                created: joi.string().optional(),
+                lastModified: joi.string().optional(),
+                merchantId: joi.string().required(),
                 serviceCode: joi.string().required(),
                 businessModel: joi.string().optional(),
                 age: joi.number().optional(),
                 isRestricted: joi.bool().optional(),
+                smsConfirmation: joi.bool().optional(),
                 invoiceText: joi.string().required(),
-                statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
-                sessionId: joi.string().optional(),
-                correlationId: joi.string().optional(),
-                oneTimePassword: joi.string().optional(),
-                properties: joi.object().optional(),
+                price: joi.number().required(),
+                timeout: joi.number().optional(),
                 tags: joi.array().optional(),
+                properties: joi.object().optional(),
                 billed: joi.boolean().optional(),
-                created: joi.string().optional(),
-                lastModified: joi.string().optional()
+                resultCode: joi.string().optional(),
+                resultDescription: joi.string().optional()
             }).required()
         });
 

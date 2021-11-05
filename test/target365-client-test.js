@@ -324,7 +324,7 @@ describe('', () => {
 
                 client.getOutMessageExport(from, to)
                     .then((csv) => {
-                        expect(csv.startsWith("SendTime,Sender,Recipient,MessageParts,StatusCode,DetailedStatusCode,Operator,Tags")).to.equal(true);
+                      expect(csv.startsWith("SendTime,Sender,Recipient,RecipientPrefix,MessageParts,StatusCode,DetailedStatusCode,Operator,Tags")).to.equal(true);
                     });
             });
         });
@@ -587,7 +587,7 @@ describe('', () => {
             it('strex one time password should be created and verified', () => {
                 let strexOneTimePassword = {
                     transactionId: uuidv4(),
-                    merchantId: '10000002',
+                    merchantId: 'JavaSdkTest',
                     recipient: '+4798079008',
                     recurring: false
                 };
@@ -760,7 +760,7 @@ describe('', () => {
                 it('transaction.transactionId, transaction.merchantId, transaction.shortNumber, transaction.recipient, transaction.price, transaction.serviceCode, transaction.invoiceText should be required', () => {
                     return client.postStrexTransaction({}).then((response) => {
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"merchantId" is required', '"shortNumber" is required', '"recipient" is required', '"price" is required', '"serviceCode" is required', '"invoiceText" is required']);
+                        expect(response.constraints).to.deep.equal(['"transactionId" is required', '"shortNumber" is required', '"merchantId" is required', '"serviceCode" is required', '"invoiceText" is required', '"price" is required']);
                     });
                 });
 
@@ -775,8 +775,10 @@ describe('', () => {
                         serviceCode: '',
                         invoiceText: ''
                     }).then((response) => {
+                        console.log(response.error);
+                        console.log(response.constraints);
                         expect(response.error).to.equal('InvalidInput');
-                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
+                        expect(response.constraints).to.deep.equal(['"transactionId" is not allowed to be empty', '"shortNumber" is not allowed to be empty', '"recipient" is not allowed to be empty', '"merchantId" is not allowed to be empty', '"serviceCode" is not allowed to be empty', '"invoiceText" is not allowed to be empty']);
                     });
                 });
             });
