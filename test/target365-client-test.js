@@ -324,7 +324,7 @@ describe('', () => {
 
                 client.getOutMessageExport(from, to)
                     .then((csv) => {
-                      expect(csv.startsWith("SendTime,Sender,Recipient,RecipientPrefix,MessageParts,StatusCode,DetailedStatusCode,Operator,Tags")).to.equal(true);
+                        expect(csv.startsWith("SendTime,Sender,Recipient,RecipientPrefix,MessageParts,StatusCode,DetailedStatusCode,Operator,Tags")).to.equal(true);
                     });
             });
         });
@@ -656,6 +656,7 @@ describe('', () => {
                     price: 99,
                     merchantId: 'JavaSdkTest',
                     businessModel: 'STREX-PAYMENT',
+                    preAuthServiceId: 'MyProduct',
                     serviceCode: '14002',
                     invoiceText: 'Donation test',
                     onlineText: 'Buy directly',
@@ -670,22 +671,24 @@ describe('', () => {
                     age: 0
                 };
 
-              return client.putOneClickConfig(oneClickConfig)
-                .then(() => client.getOneClickConfig(oneClickConfig.configId))
-                .then((fetched) => {
-                  expect(fetched.configId).to.equal(oneClickConfig.configId);
-                  expect(fetched.merchantId).to.equal(oneClickConfig.merchantId);
-                  expect(fetched.shortNumber).to.equal(oneClickConfig.shortNumber);
-                  expect(fetched.redirectUrl).to.equal(oneClickConfig.redirectUrl);
-                  expect(fetched.price).to.equal(oneClickConfig.price);
-                  expect(fetched.timeout).to.equal(oneClickConfig.timeout);
-                  expect(fetched.serviceCode).to.equal(oneClickConfig.serviceCode);
-                  expect(fetched.invoiceText).to.equal(oneClickConfig.invoiceText);
-                })
+                return client.putOneClickConfig(oneClickConfig)
+                    .then(() => client.getOneClickConfig(oneClickConfig.configId))
+                    .then((fetched) => {
+                        expect(fetched.configId).to.equal(oneClickConfig.configId);
+                        expect(fetched.merchantId).to.equal(oneClickConfig.merchantId);
+                        expect(fetched.businessModel).to.equal(oneClickConfig.businessModel);
+                        expect(fetched.preAuthServiceId).to.equal(oneClickConfig.preAuthServiceId);
+                        expect(fetched.shortNumber).to.equal(oneClickConfig.shortNumber);
+                        expect(fetched.redirectUrl).to.equal(oneClickConfig.redirectUrl);
+                        expect(fetched.price).to.equal(oneClickConfig.price);
+                        expect(fetched.timeout).to.equal(oneClickConfig.timeout);
+                        expect(fetched.serviceCode).to.equal(oneClickConfig.serviceCode);
+                        expect(fetched.invoiceText).to.equal(oneClickConfig.invoiceText);
+                    })
             });
 
-          it('strex user validity should be full', () => {
-              return client.getStrexUserValidity('+4799031520', 'JavaSdkTest')
+            it('strex user validity should be full', () => {
+                return client.getStrexUserValidity('+4799031520', 'JavaSdkTest')
                     .then((userValidity) => {
                         expect(userValidity).to.equal('Full');
                     })
