@@ -1,6 +1,6 @@
 {
 	"name": "target365-sdk",
-	"version": "1.7.1",
+	"version": "1.7.2",
 	"description": "Target365 SDK",
 	"main": "target365-client.js",
 	"scripts": {
