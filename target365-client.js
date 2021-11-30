@@ -513,6 +513,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   serviceCode, // Service code. Only used for STREX messages.
      *   businessModel, // Business model. Only used for STREX messages.
      *   preAuthServiceId, // Service id used for pre-authorizations and recurring billing.
+     *   preAuthServiceDescription, // Service description used for pre-authorizations and recurring billing.
      *   age, // Age. Only used for STREX messages.
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
@@ -557,6 +558,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                     serviceCode: joi.string().required(),
                     businessModel: joi.string().optional(),
                     preAuthServiceId: joi.string().optional(),
+                    preAuthServiceDescription: joi.string().optional(),
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
@@ -603,6 +605,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   serviceCode, // Service code. Only used for STREX messages.
      *   businessModel, // Business model. Only used for STREX messages.
      *   preAuthServiceId, // Service id used for pre-authorizations and recurring billing.
+     *   preAuthServiceDescription, // Service description used for pre-authorizations and recurring billing.
      *   age, // Age. Only used for STREX messages.
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
@@ -648,6 +651,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                     serviceCode: joi.string().required(),
                     businessModel: joi.string().optional(),
                     preAuthServiceId: joi.string().optional(),
+                    preAuthServiceDescription: joi.string().optional(),
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
@@ -717,6 +721,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   serviceCode, // Service code. Only used for STREX messages.
      *   businessModel, // Business model. Only used for STREX messages.
      *   preAuthServiceId, // Service id used for pre-authorizations and recurring billing.
+     *   preAuthServiceDescription, // Service description used for pre-authorizations and recurring billing.
      *   age, // Age. Only used for STREX messages.
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text. Only used for STREX messages.
@@ -762,6 +767,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                     serviceCode: joi.string().required(),
                     businessModel: joi.string().optional(),
                     preAuthServiceId: joi.string().optional(),
+                    preAuthServiceDescription: joi.string().optional(),
                     age: joi.number().optional(),
                     isRestricted: joi.bool().optional(),
                     invoiceText: joi.string().required(),
@@ -975,6 +981,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   serviceCode, // Service code.
      *   businessModel, // Business model. Only used for STREX messages.
      *   preAuthServiceId, // Service id used for pre-authorizations and recurring billing.
+     *   preAuthServiceDescription, // Service description used for pre-authorizations and recurring billing.
      *   age, // Age. Only used for STREX messages.
      *   isRestricted, // IsRestricted. Only used for STREX messages.
      *   invoiceText, // Invoice text.
@@ -1013,6 +1020,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 serviceCode: joi.string().required(),
                 businessModel: joi.string().optional(),
                 preAuthServiceId: joi.string().optional(),
+                preAuthServiceDescription: joi.string().optional(),
                 age: joi.number().optional(),
                 isRestricted: joi.bool().optional(),
                 smsConfirmation: joi.bool().optional(),
@@ -1113,6 +1121,7 @@ function Client(ecPrivateKeyAsString, parameters) {
    *   serviceCode, // Service code.
    *   businessModel, // Business model. Only used for STREX messages.
    *   preAuthServiceId, // Service id used for pre-authorizations and recurring billing.
+   *   preAuthServiceDescription, // Service description used for pre-authorizations and recurring billing.
    *   isRecurring, // Whether this config is for setting up subscriptions and recurring payments.
    *   redirectUrl, // One-click redirect url.
    *   onlineText, // One-click online text to use when oneclick msisdn detection is online and PIN-code can be skipped.
@@ -1144,6 +1153,7 @@ function Client(ecPrivateKeyAsString, parameters) {
         serviceCode: joi.string().required(),
         businessModel: joi.string().optional(),
         preAuthServiceId: joi.string().optional(),
+        preAuthServiceDescription: joi.string().optional(),
         isRecurring: joi.bool().optional(),
         redirectUrl: joi.string().required(),
         onlineText: joi.string().optional(),
