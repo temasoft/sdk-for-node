@@ -6,6 +6,7 @@
     * [Target365Client](#target365client)
 * [Text messages](#text-messages)
     * [Send an SMS](#send-an-sms)
+    * [Set DeliveryReport URL for an SMS](#set-deliveryreport-url-for-an-sms)
     * [Schedule an SMS for later sending](#schedule-an-sms-for-later-sending)
     * [Edit a scheduled SMS](#edit-a-scheduled-sms)
     * [Delete a scheduled SMS](#delete-a-scheduled-sms)
@@ -55,6 +56,20 @@ let outMessage = {
     sender: 'Target365',
     recipient: '+4798079008',
     content: 'Hello World from SMS!'
+};
+
+await serviceClient.postOutMessage(outMessage);
+```
+
+### Set DeliveryReport URL for an SMS
+This example sends an SMS and later a [DeliveryReport](#dlr-forward) will be posted at the url specified below.
+```Node
+let outMessage = {
+    transactionId: uuidv4(),
+    sender: 'Target365',
+    recipient: '+4798079008',
+    content: 'Hello World from SMS!',
+    deliveryReportUrl: 'https://your.site.com/sms/dlr'
 };
 
 await serviceClient.postOutMessage(outMessage);
