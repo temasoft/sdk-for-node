@@ -10,6 +10,7 @@
     * [Schedule an SMS for later sending](#schedule-an-sms-for-later-sending)
     * [Edit a scheduled SMS](#edit-a-scheduled-sms)
     * [Delete a scheduled SMS](#delete-a-scheduled-sms)
+    * [Send batch](#send-batch)
 * [Payment transactions](#payment-transactions)
     * [Create a Strex payment transaction](#create-a-strex-payment-transaction)
     * [Create a Strex payment transaction with one-time password](#create-a-strex-payment-transaction-with-one-time-password)
@@ -103,6 +104,31 @@ serviceClient.putOutMessageAsync(outMessage);
 This example deletes a previously created scheduled SMS.
 ```Node
 serviceClient.deleteOutMessage(transactionId);
+```
+
+### Send batch
+This example sends a batch of messages in one operation.
+Batches behave logically the same way as if you would send each message by itself and is offered only for performance reasons. Here are the limitations and restrictions when it comes to using batches:
+* You can have up to 10 000 messages per batch operation.
+* Each message in the batch must have a unique TransactionId, otherwise the operation will fail.
+* If one or more messages have errors (like invalid recipient etc.) only those messages will fail, the rest will be processed normally.
+* If you want a status per message you have to set the DeliveryReportUrl on each message.
+```Node
+let outMessage1 = {
+    transactionId: uuidv4(),
+    sender: 'Target365',
+    recipient: '+4798079008',
+    content: 'Hello!'
+};
+
+let outMessage2 = {
+    transactionId: uuidv4(),
+    sender: 'Target365',
+    recipient: '+4798079008',
+    content: 'Hello again!'
+};
+
+await serviceClient.postOutMessageBatch([outMessage1, outMessage2]);
 ```
 
 ## Payment transactions
