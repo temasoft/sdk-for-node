@@ -327,7 +327,18 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   created, // Creation date.
      *   lastModified, // Last modified date.
      *   customProperties, // Custom properties associated with keyword. Will be propagated to incoming messages.
-     *   tags // Tags associated with keyword. Can be used for statistics and grouping.
+     *   tags, // Tags associated with keyword. Can be used for statistics and grouping.
+     *   preAuthSettings
+     *   {
+     *      infoText, // Info message sent before preauth message
+     *      infoSender, // Sender of info message
+     *      prefixMessage, // Text inserted before preauth text
+     *      postfixMessage, // Text inserted after preauth text
+     *      delay, // Delay in minutes between info message and preauth message
+     *      merchantId, // MerchantId to perform preauth on
+     *      serviceDescription, // Service description for Strex "Min Side"
+     *      active // If settings are active
+     *   }
      * }
      *
      * @return Resource uri of created keyword.
@@ -395,6 +406,17 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   customProperties, // Custom properties associated with keyword. Will be propagated to incoming messages.
      *   tags, // Tags associated with keyword. Can be used for statistics and grouping.
      *   aliases, // Alias keywords associated with keyword.
+     *   preAuthSettings
+     *   {
+     *      infoText, // Info message sent before preauth message
+     *      infoSender, // Sender of info message
+     *      prefixMessage, // Text inserted before preauth text
+     *      postfixMessage, // Text inserted after preauth text
+     *      delay, // Delay in minutes between info message and preauth message
+     *      merchantId, // MerchantId to perform preauth on
+     *      serviceDescription, // Service description for Strex "Min Side"
+     *      active // If settings are active
+     *   }
      * }
      *
      * @return No content
@@ -619,6 +641,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   detailedStatusCode, // Detailed status code.
+     *   statusDescription, // More detailed description of statusCode.
      *   delivered, // Whether message was delivered. Null if status is unknown.
      *   operatorId, // Operator id (from delivery report).
      *   billed, // Whether billing was performed. Null if status is unknown.
@@ -666,6 +689,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 detailedStatusCode: joi.string().optional(),
+                statusDescription: joi.string().optional(),
                 delivered: joi.boolean().optional(),
                 operatorId: joi.string().optional(),
                 billed: joi.boolean().optional(),
@@ -735,6 +759,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   created, // Created time.
      *   statusCode, // Delivery status code. Can be 'Queued', 'Sent', 'Failed', 'Ok' or 'Reversed'
      *   detailedStatusCode, // Detailed status code.
+     *   statusDescription, // More detailed description of statusCode.
      *   delivered, // Whether message was delivered. Null if status is unknown.
      *   operatorId, // Operator id (from delivery report).
      *   billed, // Whether billing was performed. Null if status is unknown.
@@ -782,6 +807,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 created: joi.string().optional(),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 detailedStatusCode: joi.string().optional(),
+                statusDescription: joi.string().optional(),
                 delivered: joi.boolean().optional(),
                 operatorId: joi.string().optional(),
                 billed: joi.boolean().optional(),
@@ -1013,6 +1039,7 @@ function Client(ecPrivateKeyAsString, parameters) {
                 deliveryMode: joi.string().optional().valid('AtLeastOnce', 'AtMostOnce'),
                 statusCode: joi.string().optional().valid('Queued', 'Sent', 'Failed', 'Ok', 'Reversed'),
                 detailedStatusCode: joi.string().optional(),
+                statusDescription: joi.string().optional(),
                 smscTransactionId: joi.string().optional(),
                 created: joi.string().optional(),
                 lastModified: joi.string().optional(),
