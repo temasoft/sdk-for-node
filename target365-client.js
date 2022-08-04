@@ -328,17 +328,8 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   lastModified, // Last modified date.
      *   customProperties, // Custom properties associated with keyword. Will be propagated to incoming messages.
      *   tags, // Tags associated with keyword. Can be used for statistics and grouping.
-     *   preAuthSettings
-     *   {
-     *      infoText, // Info message sent before preauth message
-     *      infoSender, // Sender of info message
-     *      prefixMessage, // Text inserted before preauth text
-     *      postfixMessage, // Text inserted after preauth text
-     *      delay, // Delay in minutes between info message and preauth message
-     *      merchantId, // MerchantId to perform preauth on
-     *      serviceDescription, // Service description for Strex "Min Side"
-     *      active // If settings are active
-     *   }
+     *   aliases, // Alias keywords associated with keyword.
+     *   preAuthSettings // Pre-auth settings
      * }
      *
      * @return Resource uri of created keyword.
@@ -359,7 +350,18 @@ function Client(ecPrivateKeyAsString, parameters) {
                 created: joi.string().optional(),
                 lastModified: joi.string().optional(),
                 customProperties: joi.object().optional(),
-                tags: joi.array().optional()
+                tags: joi.array().optional(),
+                aliases: joi.array().optional(),
+                preAuthSettings: joi.object().keys({
+                    infoText: joi.string().optional(),
+                    infoSender: joi.string().optional(),
+                    prefixMessage: joi.string().optional(),
+                    postfixMessage: joi.string().optional(),
+                    delay: joi.number().optional(),
+                    merchantId: joi.string().optional(),
+                    serviceDescription: joi.string().optional(),
+                    active: joi.bool().optional()
+                }).optional()
             }).required()
         });
 
@@ -406,17 +408,7 @@ function Client(ecPrivateKeyAsString, parameters) {
      *   customProperties, // Custom properties associated with keyword. Will be propagated to incoming messages.
      *   tags, // Tags associated with keyword. Can be used for statistics and grouping.
      *   aliases, // Alias keywords associated with keyword.
-     *   preAuthSettings
-     *   {
-     *      infoText, // Info message sent before preauth message
-     *      infoSender, // Sender of info message
-     *      prefixMessage, // Text inserted before preauth text
-     *      postfixMessage, // Text inserted after preauth text
-     *      delay, // Delay in minutes between info message and preauth message
-     *      merchantId, // MerchantId to perform preauth on
-     *      serviceDescription, // Service description for Strex "Min Side"
-     *      active // If settings are active
-     *   }
+     *   preAuthSettings // Pre-auth settings
      * }
      *
      * @return No content
@@ -438,7 +430,17 @@ function Client(ecPrivateKeyAsString, parameters) {
                 lastModified: joi.string().optional(),
                 customProperties: joi.object().optional(),
                 tags: joi.array().optional(),
-                aliases: joi.array().optional()
+                aliases: joi.array().optional(),
+                preAuthSettings: joi.object().keys({
+                    infoText: joi.string().optional(),
+                    infoSender: joi.string().optional(),
+                    prefixMessage: joi.string().optional(),
+                    postfixMessage: joi.string().optional(),
+                    delay: joi.number().optional(),
+                    merchantId: joi.string().optional(),
+                    serviceDescription: joi.string().optional(),
+                    active: joi.bool().optional()
+                }).optional()
             }).required()
         });
 
