@@ -7,6 +7,7 @@
 * [Text messages](#text-messages)
     * [Send an SMS](#send-an-sms)
     * [Set DeliveryReport URL for an SMS](#set-deliveryreport-url-for-an-sms)
+    * [Add tags to message](#add-tags-to-message)
     * [Schedule an SMS for later sending](#schedule-an-sms-for-later-sending)
     * [Edit a scheduled SMS](#edit-a-scheduled-sms)
     * [Delete a scheduled SMS](#delete-a-scheduled-sms)
