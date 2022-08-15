@@ -84,7 +84,7 @@ let outMessage = {
     transactionId: uuidv4(),
     sender: 'Target365',
     recipient: '+4798079008',
-    content: 'Hello World from SMS!'
+    content: 'Hello World from SMS!',
     tags: ["tag1", "group/subgroup/tag2"]
 };
 
