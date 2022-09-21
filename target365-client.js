@@ -1227,6 +1227,66 @@ function Client(ecPrivateKeyAsString, parameters) {
     }));
   };
 
+  /**
+   * Sends pin code to user for verification.
+   *
+   * @param pincode pincode object.
+   * {
+   *   transactionId, // Transaction id.
+   *   recipient, // Recipient phone number.
+   *   sender, // SMS Sender (originator).
+   *   prefixText, // Text string which will be prepended to the pincode in the SMS message sent to the subscriber.
+   *   suffixText, // Text string which will be appended to the pincode in the SMS message sent to the subscriber.
+   * }
+   *
+   * @return Void
+   */
+  this.postPincode = (pincode) => {
+    const object = {
+      pincode: pincode
+    };
+
+    const schema = joi.object().keys({
+      pincode: joi.object().keys({
+        transactionId: joi.string().required(),
+        recipient: joi.string().required(),
+        sender: joi.string().required(),
+        prefixText: joi.string().optional(),
+        suffixText: joi.string().optional()
+      }).required()
+    });
+
+    return validate(object, schema, () => doPost('api/pincodes', JSON.stringify(pincode), {
+      204: (response) => ''
+    }));
+  };
+
+  /**
+   * Gets a strex one-time password.
+   *
+   * @param transactionId Transaction id.
+   *
+   * @return A strex one-time password.
+   */
+  this.getPincodeVerification = (transactionId, pincode) => {
+    const object = {
+      transactionId: transactionId,
+      pincode: pincode
+    };
+
+    const schema = joi.object().keys({
+      transactionId: joi.string().required(),
+      pincode: joi.string().required(),
+    });
+
+    const params = parameters ? [new Param('transactionId', parameters.transactionId), new Param('pincode', parameters.pincode)].filter((parameter) => parameter.getValue()) : [];
+
+    return validate(object, schema, () => doGet('api/pincodes/verification', params, {
+      200: (response) => response.json(),
+      404: (response) => null
+    }));
+  };
+
     /**
      * Verifies signature
      *

@@ -906,5 +906,28 @@ describe('', () => {
                 });
             });
         });
+
+        describe('Pincode', () => {
+          describe('Integration', () => {
+            describe('pincode', () => {
+              it('pincode should be created and verified', () => {
+                let pincode = {
+                  transactionId: uuidv4(),
+                  recipient: '+4798079008',
+                  sender: 'Sender'
+                };
+
+                // Create pincode
+                return client.postPincode(pincode)
+                  .then(() => client.getOutMessage(pincode.transactionId))
+                  .then((outMessage) => client.getPincodeVerification(pincode.transactionId, outMessage.content))
+                  // Verify created user pincode
+                  .then((result) => {
+                    expect(result) == "true";
+                  });
+                });
+             });
+          });
+       });
     });
 });
