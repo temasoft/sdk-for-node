@@ -29,6 +29,9 @@
     * [SMS forward](#sms-forward)
     * [DLR forward](#dlr-forward)
     * [DLR status codes](#dlr-status-codes)
+* [Pincodes](#pincodes)
+    * [Send pincode](#send-pincode)
+    * [Verify pincode](#verify-pincode)
 * [Encoding and SMS length](#encoding-and-sms-length)
 
 ## Introduction
@@ -411,6 +414,30 @@ Delivery reports contains two status codes, one overall called `StatusCode` and 
 |TimeoutError|Timeout error|
 |Stopped|Message is part of more than 100 identical messages in an hour and stopped, assuming it is part of an eternal loop|
 |OtherError|Miscellaneous. Errors not covered by statuses above|
+
+## Pincodes
+
+### Send pincode
+This example shows how to send pincodes to users and verify their input to validate their phonenumbers.
+#### Request
+```
+let pincode = {
+   transactionId: uuidv4(),
+   recipient: '+4798079008',
+   sender: 'Sender',
+   prefixText: 'Your pin code is ',
+   suffixText: ' to log on to acme.inc'
+};
+
+await serviceClient.postPincode(pincode);
+```
+
+### Verify pincode
+This example shows how to verify the pincode sent in the previous step and entered on a web page by the user. Use the TransactionId provided in the previous step.
+#### Request
+```
+boolean success = await serviceClient.getPincodeVerification(pincode.transactionId, pin);
+```
 
 ## Encoding and SMS length
 When sending SMS messages, we'll automatically send messages in the most compact encoding possible. If you include any non GSM-7 characters in your message body, we will automatically fall back to UCS-2 encoding (which will limit message bodies to 70 characters each).
