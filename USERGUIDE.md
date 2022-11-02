@@ -395,7 +395,6 @@ Delivery reports contains two status codes, one overall called `StatusCode` and 
 |Delivered|Message is delivered to destination|
 |Expired|The message has not been delivered and the "lifetime" of the message has expired. Standard "lifetime" (time we try to deliver a message) is set to 2 hours, this can be overwritten if you are technically integrated. The billing has not been completed and a potential message has not been delivered. The TimeToLive of the billing has expired. Standard TimeToLive (time we try to charge) varies from method og action, some can be overwritten if you are technically integrated.|
 |Undelivered|Message has not been delivered, unfortunately we have not received a more detailed delivery description.|
-|MissingDeliveryReport|Operator has not given us final status.|
 |UnknownError|Obsolete. Replaced by OtherError|
 |Failed|Message has not been delivered, unfortunately we have not received a more detailed delivery description.|
 |CardPSPError|The billing has not been completed. The end user has uploaded a bank card for debit, the debit has failed.|
